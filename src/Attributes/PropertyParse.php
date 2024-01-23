@@ -3,13 +3,13 @@
 namespace Paulo\Attributes;
 use Attribute;
 use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
-use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
+use Paulo\Attributes\Interfaces\TransformObjectAttribute;
 use Paulo\TransformPipes\AbstractPipe;
 use Paulo\TransformPipes\ParsePipe;
 use Paulo\TransformPipes\SerializePipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class PropertyParse implements AttributePropertyParseInterface, DataTransferObjectAttribute
+class PropertyParse implements AttributePropertyParseInterface, TransformObjectAttribute
 {
     public function __construct(
         private readonly string $class,

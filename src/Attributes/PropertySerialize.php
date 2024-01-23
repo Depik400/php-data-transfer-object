@@ -5,12 +5,12 @@ namespace Paulo\Attributes;
 use Paulo\Enums\PhpType;
 use Attribute;
 use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
-use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
+use Paulo\Attributes\Interfaces\TransformObjectAttribute;
 use Paulo\TransformPipes\AbstractPipe;
 use Paulo\TransformPipes\SerializePipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
-class PropertySerialize implements AttributePropertySerializeInterface, DataTransferObjectAttribute
+class PropertySerialize implements AttributePropertySerializeInterface, TransformObjectAttribute
 {
     /**
      * @template T

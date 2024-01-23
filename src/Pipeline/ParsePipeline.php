@@ -2,6 +2,8 @@
 
 namespace Paulo\Pipeline;
 
+use Paulo\Transform\ArrGetter;
+use Paulo\Transform\ObjectSetter;
 use Paulo\TransformPipes\AbstractPipe;
 use Paulo\TransformPipes\DefaultParsePipe;
 

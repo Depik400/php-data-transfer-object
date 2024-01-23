@@ -2,8 +2,10 @@
 
 namespace Paulo\Transform;
 
+use Paulo\Attributes\Interfaces\AttributePropertyGetterInterface;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Object\Arr;
+use Paulo\Pipeline\GetPipeline;
 use ReflectionProperty;
 
 /**
@@ -34,6 +36,10 @@ class ArrGetter implements GetterInterface
 
     public function get(): mixed
     {
-        return $this->dto[$this->property->getName()];
+        return (new GetPipeline($this->dto, $this->property->getName()))
+            ->getWithAttributes($this->property->getAttributes(
+                AttributePropertyGetterInterface::class,
+                \ReflectionAttribute::IS_INSTANCEOF)
+            );
     }
 }

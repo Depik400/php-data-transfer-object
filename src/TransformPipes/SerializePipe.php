@@ -20,7 +20,7 @@ class SerializePipe extends AbstractPipe
         return (new PipelineResult())->setNext($this->cast($value))->setNext(true);
     }
 
-    protected function canCast($value): bool
+    protected function canCast(mixed $value): bool
     {
         $fromType = $this->attribute->getFromType();
         if ($fromType === null) {
@@ -36,7 +36,7 @@ class SerializePipe extends AbstractPipe
      * @param mixed $value
      * @return false|mixed
      */
-    protected function cast($value)
+    protected function cast(mixed $value)
     {
         if (!$this->canCast($value)) {
             return false;

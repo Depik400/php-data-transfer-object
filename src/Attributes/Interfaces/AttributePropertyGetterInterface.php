@@ -2,4 +2,9 @@
 
 namespace Paulo\Attributes\Interfaces;
 
-interface AttributePropertyGetterInterface {}
+use Paulo\GetPipes\AbstractGetPipe;
+
+interface AttributePropertyGetterInterface {
+    /** @return AbstractGetPipe<static> */
+    public function getPipeline(): AbstractGetPipe;
+}

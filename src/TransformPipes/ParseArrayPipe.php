@@ -7,16 +7,12 @@ use Paulo\Attributes\PropertyParseArray;
 use Paulo\Pipeline\PipelineResult;
 use ReflectionProperty;
 
-/**
- * @extends AbstractPipe<PropertyParseArray>
- */
 class ParseArrayPipe extends ParsePipe
 {
     /**
      * @param ReflectionProperty  $property
-     * @param array<string,mixed> $source
      * @param mixed|null          $value
-     * @return \Paulo\Pipeline\PipelineResult
+     * @return PipelineResult
      */
     public function execute(ReflectionProperty $property, mixed $value = null): PipelineResult
     {

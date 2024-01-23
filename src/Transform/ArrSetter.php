@@ -2,8 +2,10 @@
 
 namespace Paulo\Transform;
 
+use Paulo\Attributes\Interfaces\AttributePropertySetterInterface;
 use Paulo\Interfaces\SetterInterface;
 use Paulo\Object\Arr;
+use Paulo\Pipeline\SetPipeline;
 use ReflectionProperty;
 
 /**
@@ -12,7 +14,7 @@ use ReflectionProperty;
 class ArrSetter implements SetterInterface
 {
     public function __construct(
-        protected Arr $dto,
+        protected Arr                $dto,
         protected ReflectionProperty $property,
     )
     {
@@ -32,6 +34,13 @@ class ArrSetter implements SetterInterface
 
     public function set(mixed $value): void
     {
-        $this->dto[$this->property->getName()] = $value;
+        (new SetPipeline($this->dto, $this->property->getName()))
+            ->setWithAttributes(
+                $value,
+                $this->property->getAttributes(
+                    AttributePropertySetterInterface::class,
+                    \ReflectionAttribute::IS_INSTANCEOF
+                )
+            );
     }
 }

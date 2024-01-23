@@ -20,7 +20,7 @@ class ParsePipe extends AbstractPipe
         return (new PipelineResult())->setResult($this->create($value))->setNext(true);
     }
 
-    protected function create($value)
+    protected function create(mixed $value): mixed
     {
         $class = $this->attribute->getClass();
         $applyNull = $this->attribute->isApplyNull();

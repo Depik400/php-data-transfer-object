@@ -2,6 +2,8 @@
 
 namespace Paulo\Pipeline;
 
+use Paulo\Transform\ArrSetter;
+use Paulo\Transform\ObjectGetter;
 use Paulo\TransformPipes\AbstractPipe;
 use Paulo\TransformPipes\DefaultSerializePipe;
 
