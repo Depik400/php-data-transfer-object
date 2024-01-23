@@ -32,7 +32,7 @@ class ArrGetter implements GetterInterface
     }
 
 
-    public function get()
+    public function get(): mixed
     {
         return $this->dto[$this->property->getName()];
     }

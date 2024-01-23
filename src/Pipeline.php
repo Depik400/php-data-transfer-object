@@ -10,12 +10,20 @@ use Paulo\Interfaces\SetterInterface;
 use Paulo\Pipelines\AbstractPipe;
 use Paulo\Pipelines\DefaultParsePipe;
 
+/**
+ * @template TGetter
+ * @template TSetter
+ */
 abstract class Pipeline
 {
     protected ReflectionProperty $property;
-
+    /**
+     * @var GetterInterface<TGetter>
+     */
     protected GetterInterface $getter;
-
+    /**
+     * @var SetterInterface<TSetter>
+     */
     protected SetterInterface $setter;
 
     public function property(ReflectionProperty $reflectionProperty): static
@@ -24,14 +32,21 @@ abstract class Pipeline
         return $this;
     }
 
-    
-    public function source(GetterInterface $source)
+    /**
+     * @param GetterInterface<TGetter> $source
+     * @return $this
+     */
+    public function source(GetterInterface $source): static
     {
         $this->getter = $source;
         return $this;
     }
 
-    public function destination(SetterInterface $source)
+    /**
+     * @param SetterInterface<TSetter> $source
+     * @return $this
+     */
+    public function destination(SetterInterface $source): static
     {
         $this->setter = $source;
         return $this;
@@ -42,7 +57,7 @@ abstract class Pipeline
      *
      * @param ReflectionAttribute<DataTransferObjectAttribute>[] $attributes
      */
-    public function pipeAttributes(array $attributes)
+    public function pipeAttributes(array $attributes): void
     {
         $pipelines = $this->getPipelines($attributes);
         $pipedItem = $this->getter->get();
@@ -57,9 +72,19 @@ abstract class Pipeline
         $this->setter->set($pipedItem);
     }
 
-    abstract protected function execute(AbstractPipe $pipeline, $pipedItem);
+    /**
+     * @template TAttribute
+     * @param AbstractPipe<TAttribute> $pipeline
+     * @param mixed                    $pipedItem
+     * @return mixed
+     */
+    abstract protected function execute(AbstractPipe $pipeline, mixed $pipedItem): mixed;
 
-    public function getPipelines(array $attributes)
+    /**
+     * @param ReflectionAttribute<DataTransferObjectAttribute>[] $attributes
+     * @return array|AbstractPipe<mixed>[]
+     */
+    public function getPipelines(array $attributes): array
     {
         $instances = array_map(fn(ReflectionAttribute $attr) => $attr->newInstance(), $attributes);
         return array_map(fn(DataTransferObjectAttribute $attr) => $attr->getPipeline(), $instances);

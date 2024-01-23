@@ -20,7 +20,6 @@ abstract class PropertyIgnorePipeline
 
     /**
      * @param \ReflectionProperty $property
-     * @param array<string,mixed> $source
      * @param mixed|null          $value
      * @return PipelineResult
      */

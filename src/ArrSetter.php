@@ -33,7 +33,7 @@ class ArrSetter implements SetterInterface
         return $this;
     }
 
-    public function set($value)
+    public function set(mixed $value): void
     {
         $this->dto[$this->property->getName()] = $value;
     }

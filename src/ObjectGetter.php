@@ -30,8 +30,10 @@ class ObjectGetter implements GetterInterface
         return $this;
     }
 
-
-    public function get()
+    /**
+     * @return mixed
+     */
+    public function get(): mixed
     {
         return $this->property->getValue($this->dto);
 

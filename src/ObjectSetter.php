@@ -4,6 +4,7 @@ namespace Paulo;
 
 use Paulo\Interfaces\SetterInterface;
 use Paulo\Object\Arr;
+use ReflectionProperty;
 
 /**
  * @implements SetterInterface<DataTransferObject>
@@ -14,7 +15,7 @@ class ObjectSetter implements SetterInterface
 
     public function __construct(
         protected DataTransferObject  $dto,
-        protected \ReflectionProperty $property,
+        protected ReflectionProperty $property,
     )
     {
     }
@@ -25,13 +26,13 @@ class ObjectSetter implements SetterInterface
         return $this;
     }
 
-    public function setProperty(\ReflectionProperty $reflectionProperty): static
+    public function setProperty(ReflectionProperty $reflectionProperty): static
     {
         $this->property = $reflectionProperty;
         return $this;
     }
 
-    public function set($value)
+    public function set(mixed $value): void
     {
         $this->property->setValue($this->dto, $value);
     }

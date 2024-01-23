@@ -2,7 +2,6 @@
 
 namespace Paulo;
 
-use Reflection;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionProperty;
@@ -31,7 +30,7 @@ class DataTransferObject
      */
     public function fill(array|DataTransferObject $fromFill): static
     {
-        if($fromFill instanceof DataTransferObject) {
+        if ($fromFill instanceof DataTransferObject) {
             $fromFill = $fromFill->toArray();
         }
         $reflector = new ReflectionClass(static::class);
@@ -44,16 +43,13 @@ class DataTransferObject
 
 
     /**
-     *@param ReflectionProperty $property
+     * @param ReflectionProperty  $property
      * @param array<string,mixed> $wrap
      * @return void
      */
     protected function processProperty(ReflectionProperty $property, array $wrap): void
     {
-        $attributes = \array_merge(
-            $property->getAttributes(AttributePropertyBoth::class, ReflectionAttribute::IS_INSTANCEOF),
-            $property->getAttributes(AttributePropertyParseInterface::class,  ReflectionAttribute::IS_INSTANCEOF),
-        );
+        $attributes = $this->getParseAttributes($property);
         $pipeline = $this->getParsePipeline();
         $pipeline
             ->source($this->getArrGetter(new Arr($wrap), $property))
@@ -62,6 +58,21 @@ class DataTransferObject
         $pipeline->pipeAttributes($attributes);
     }
 
+    /**
+     * @param ReflectionProperty $property
+     * @return ReflectionAttribute<AttributePropertyBoth|AttributePropertyParseInterface>[]
+     */
+    protected function getParseAttributes(ReflectionProperty $property): array
+    {
+        return \array_merge(
+            $property->getAttributes(AttributePropertyBoth::class, ReflectionAttribute::IS_INSTANCEOF),
+            $property->getAttributes(AttributePropertyParseInterface::class, ReflectionAttribute::IS_INSTANCEOF),
+        );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $result = new Arr();
@@ -84,43 +95,75 @@ class DataTransferObject
         $pipeline->pipeAttributes($attributes);
     }
 
-    protected function getSerializeAttributes(ReflectionProperty $property) {
+    /**
+     * @param ReflectionProperty $property
+     * @return ReflectionAttribute<AttributePropertyBoth|AttributePropertySerializeInterface>[]
+     */
+    protected function getSerializeAttributes(ReflectionProperty $property): array
+    {
         return \array_merge(
             $property->getAttributes(AttributePropertyBoth::class, ReflectionAttribute::IS_INSTANCEOF),
-            $property->getAttributes(AttributePropertySerializeInterface::class,  ReflectionAttribute::IS_INSTANCEOF),
+            $property->getAttributes(AttributePropertySerializeInterface::class, ReflectionAttribute::IS_INSTANCEOF),
         );
     }
 
-    protected function getObjectGetter($source, ReflectionProperty $property): GetterInterface {
+    /**
+     * @param DataTransferObject $source
+     * @param ReflectionProperty $property
+     * @return GetterInterface<DataTransferObject>
+     */
+    protected function getObjectGetter(mixed $source, ReflectionProperty $property): GetterInterface
+    {
         return new ObjectGetter($source, $property);
     }
 
-    protected function getObjectSetter(Arr|DataTransferObject $source, ReflectionProperty $property): SetterInterface {
+    /**
+     * @param Arr|DataTransferObject $source
+     * @param ReflectionProperty     $property
+     * @return SetterInterface<DataTransferObject>
+     */
+    protected function getObjectSetter(mixed $source, ReflectionProperty $property): SetterInterface
+    {
         return new ObjectSetter($source, $property);
     }
 
-    protected function getArrGetter($source, ReflectionProperty $property): GetterInterface {
+    /**
+     * @param mixed              $source
+     * @param ReflectionProperty $property
+     * @return GetterInterface<Arr>
+     */
+    protected function getArrGetter(mixed $source, ReflectionProperty $property): GetterInterface
+    {
         return (new ArrGetter($source, $property));
     }
 
-    protected function getArrSetter(Arr|DataTransferObject $source, ReflectionProperty $property): SetterInterface {
+    /**
+     * @param Arr|DataTransferObject $source
+     * @param ReflectionProperty     $property
+     * @return SetterInterface<Arr>
+     */
+    protected function getArrSetter(mixed $source, ReflectionProperty $property): SetterInterface
+    {
         return new ArrSetter($source, $property);
     }
+
     /**
      * Undocumented function
      *
-     * @return Pipeline
+     * @return Pipeline<DataTransferObject,Arr>
      */
-    protected function getSerializePipeline() {
+    protected function getSerializePipeline(): Pipeline
+    {
         return new SerializePipeline();
     }
 
     /**
      * Undocumented function
      *
-     * @return Pipeline
+     * @return Pipeline<Arr,DataTransferObject>
      */
-    protected function getParsePipeline() {
+    protected function getParsePipeline(): Pipeline
+    {
         return new ParsePipeline();
     }
 }

@@ -19,5 +19,5 @@ interface GetterInterface {
 
     public function setProperty(ReflectionProperty $reflectionProperty): static;
 
-    public function get();
+    public function get(): mixed;
 }

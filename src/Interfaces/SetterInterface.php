@@ -18,5 +18,5 @@ interface SetterInterface {
 
     public function setProperty(ReflectionProperty $reflectionProperty): static;
 
-    public function set($value);
+    public function set(mixed$value): void;
 }

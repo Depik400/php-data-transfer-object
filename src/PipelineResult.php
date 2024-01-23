@@ -4,7 +4,7 @@ namespace Paulo;
 
 class PipelineResult {
     /** @var mixed $result */
-    protected $result;
+    protected mixed $result;
 
     protected bool $next;
 
