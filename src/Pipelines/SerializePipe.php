@@ -16,7 +16,7 @@ class SerializePipe extends AbstractPipe
     /**
      * @inheritDoc
      */
-    public function execute(\ReflectionProperty $property, $value = null): PipelineResult
+    public function execute(\ReflectionProperty $property, mixed $value = null): PipelineResult
     {
         return (new PipelineResult())->setNext($this->cast($value))->setNext(true);
     }

@@ -4,19 +4,16 @@ namespace Paulo;
 
 use Paulo\Interfaces\SetterInterface;
 use Paulo\Object\Arr;
+use ReflectionProperty;
 
 /**
  * @implements SetterInterface<Arr>
  */
 class ArrSetter implements SetterInterface
 {
-    protected Arr $dto;
-
-    protected \ReflectionProperty $property;
-
     public function __construct(
-        protected Arr$object,
-        protected \ReflectionProperty $reflectionProperty
+        protected Arr $dto,
+        protected ReflectionProperty $property,
     )
     {
     }
@@ -27,7 +24,7 @@ class ArrSetter implements SetterInterface
         return $this;
     }
 
-    public function setProperty(\ReflectionProperty $reflectionProperty): static
+    public function setProperty(ReflectionProperty $reflectionProperty): static
     {
         $this->property = $reflectionProperty;
         return $this;
@@ -35,6 +32,7 @@ class ArrSetter implements SetterInterface
 
     public function set(mixed $value): void
     {
+        echo sprintf("isset(%b)", isset($this->property));
         $this->dto[$this->property->getName()] = $value;
     }
 }

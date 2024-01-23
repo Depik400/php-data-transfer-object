@@ -11,7 +11,7 @@ class SerializeArrayPipe extends SerializePipe
     /**
      * @inheritDoc
      */
-    public function execute(\ReflectionProperty $property, $value = null): PipelineResult
+    public function execute(\ReflectionProperty $property, mixed $value = null): PipelineResult
     {
         $generated = [];
         $result = (new PipelineResult())->setNext(true);

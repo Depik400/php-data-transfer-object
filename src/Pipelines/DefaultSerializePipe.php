@@ -15,7 +15,7 @@ class DefaultSerializePipe extends AbstractPipe
      * @inheritDoc
      * @throws \ReflectionException
      */
-    public function execute(\ReflectionProperty $property, $value = null): PipelineResult
+    public function execute(\ReflectionProperty $property, mixed $value = null): PipelineResult
     {
         $type = $property->getType();
         $item = $value;

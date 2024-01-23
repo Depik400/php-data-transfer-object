@@ -14,9 +14,9 @@ class PropertySerialize implements AttributePropertySerializeInterface, DataTran
 {
     /**
      * @template T
-     * @param class-string      $casterClassName
-     * @param string            $method
-     * @param boolean           $static
+     * @param class-string                 $casterClassName
+     * @param string|null                  $method
+     * @param boolean                      $static
      * @param PhpType|class-string<T>|null $fromType
      */
     public function __construct(

@@ -15,7 +15,7 @@ use Paulo\Pipelines\ParsePipe as PipelinesParsePipeline;
  */
 class ParsePipeline extends Pipeline
 {
-    protected function execute(AbstractPipe $pipeline, $pipedItem): PipelineResult
+    protected function execute(AbstractPipe $pipeline,mixed $pipedItem): PipelineResult
     {
         return $pipeline->execute($this->property, $pipedItem);
     }

@@ -15,10 +15,10 @@ class ParseArrayPipe extends ParsePipe
     /**
      * @param ReflectionProperty  $property
      * @param array<string,mixed> $source
-     * @param array<string,mixed> $value
+     * @param mixed|null          $value
      * @return PipelineResult
      */
-    public function execute(ReflectionProperty $property, $value = null): PipelineResult
+    public function execute(ReflectionProperty $property, mixed $value = null): PipelineResult
     {
         $generated = [];
         $result = (new PipelineResult())->setNext(true);

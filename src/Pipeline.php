@@ -63,12 +63,18 @@ abstract class Pipeline
         $pipedItem = $this->getter->get();
         foreach ($pipelines as $pipeline) {
             $result = $this->execute($pipeline, $pipedItem);
-            $pipedItem = $result->getResult();
+            if($result->isPipeDropped()) {
+                echo 'here' . static::class . PHP_EOL;
+                return;
+            }
+            if ($result->canSetValue()) {
+                $pipedItem = $result->getResult();
+            }
             if (!$result->getNext()) {
                 break;
             }
         }
-
+        echo $this->property->getName() . PHP_EOL;
         $this->setter->set($pipedItem);
     }
 
@@ -76,9 +82,8 @@ abstract class Pipeline
      * @template TAttribute
      * @param AbstractPipe<TAttribute> $pipeline
      * @param mixed                    $pipedItem
-     * @return mixed
      */
-    abstract protected function execute(AbstractPipe $pipeline, mixed $pipedItem): mixed;
+    abstract protected function execute(AbstractPipe $pipeline, mixed $pipedItem): PipelineResult;
 
     /**
      * @param ReflectionAttribute<DataTransferObjectAttribute>[] $attributes

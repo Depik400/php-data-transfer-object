@@ -35,7 +35,8 @@ class ObjectGetter implements GetterInterface
      */
     public function get(): mixed
     {
-        return $this->property->getValue($this->dto);
-
+        if ($this->property->isInitialized($this->dto))
+            return $this->property->getValue($this->dto);
+        return null;
     }
 }

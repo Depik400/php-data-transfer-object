@@ -15,7 +15,7 @@ class DefaultParsePipe extends AbstractPipe
      * @inheritDoc
      * @throws \ReflectionException
      */
-    public function execute(\ReflectionProperty $property,$value = null): PipelineResult
+    public function execute(\ReflectionProperty $property, mixed $value = null): PipelineResult
     {
         $name = $property->getName();
         $type = $property->getType();

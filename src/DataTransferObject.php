@@ -11,6 +11,7 @@ use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Interfaces\SetterInterface;
 use Paulo\Object\Arr;
+use function array_merge;
 
 class DataTransferObject
 {
@@ -64,7 +65,7 @@ class DataTransferObject
      */
     protected function getParseAttributes(ReflectionProperty $property): array
     {
-        return \array_merge(
+        return array_merge(
             $property->getAttributes(AttributePropertyBoth::class, ReflectionAttribute::IS_INSTANCEOF),
             $property->getAttributes(AttributePropertyParseInterface::class, ReflectionAttribute::IS_INSTANCEOF),
         );
@@ -101,7 +102,7 @@ class DataTransferObject
      */
     protected function getSerializeAttributes(ReflectionProperty $property): array
     {
-        return \array_merge(
+        return array_merge(
             $property->getAttributes(AttributePropertyBoth::class, ReflectionAttribute::IS_INSTANCEOF),
             $property->getAttributes(AttributePropertySerializeInterface::class, ReflectionAttribute::IS_INSTANCEOF),
         );
@@ -148,8 +149,6 @@ class DataTransferObject
     }
 
     /**
-     * Undocumented function
-     *
      * @return Pipeline<DataTransferObject,Arr>
      */
     protected function getSerializePipeline(): Pipeline
@@ -158,8 +157,6 @@ class DataTransferObject
     }
 
     /**
-     * Undocumented function
-     *
      * @return Pipeline<Arr,DataTransferObject>
      */
     protected function getParsePipeline(): Pipeline

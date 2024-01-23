@@ -23,5 +23,5 @@ abstract class AbstractPipe
      * @param mixed|null          $value
      * @return PipelineResult
      */
-    abstract public function execute(\ReflectionProperty $property, $value = null): PipelineResult;
+    abstract public function execute(\ReflectionProperty $property, mixed $value = null): PipelineResult;
 }
