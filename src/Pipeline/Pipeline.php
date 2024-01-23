@@ -17,11 +17,11 @@ abstract class Pipeline
 {
     protected ReflectionProperty $property;
     /**
-     * @var GetterInterface
+     * @var TGetter $getter
      */
     protected GetterInterface $getter;
     /**
-     * @var SetterInterface
+     * @var TSetter $setter
      */
     protected SetterInterface $setter;
 
@@ -32,7 +32,7 @@ abstract class Pipeline
     }
 
     /**
-     * @param GetterInterface $source
+     * @param TGetter $source
      * @return $this
      */
     public function source(GetterInterface $source): static
@@ -42,7 +42,7 @@ abstract class Pipeline
     }
 
     /**
-     * @param SetterInterface $source
+     * @param TSetter $source
      * @return $this
      */
     public function destination(SetterInterface $source): static
@@ -63,7 +63,6 @@ abstract class Pipeline
         foreach ($pipelines as $pipeline) {
             $result = $this->execute($pipeline, $pipedItem);
             if($result->isPipeDropped()) {
-                echo 'here' . static::class . PHP_EOL;
                 return;
             }
             if ($result->canSetValue()) {

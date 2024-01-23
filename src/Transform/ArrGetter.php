@@ -1,10 +1,10 @@
 <?php
 
-namespace Paulo;
+namespace Paulo\Transform;
 
-use ReflectionProperty;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Object\Arr;
+use ReflectionProperty;
 
 /**
  * @implements GetterInterface<Arr>

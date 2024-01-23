@@ -1,18 +1,20 @@
 <?php
 
-namespace Paulo;
+namespace Paulo\Transform;
 
+use Paulo\DataTransferObject;
 use Paulo\Interfaces\SetterInterface;
-use Paulo\Object\Arr;
 use ReflectionProperty;
 
 /**
- * @implements SetterInterface<Arr>
+ * @implements SetterInterface<DataTransferObject>
  */
-class ArrSetter implements SetterInterface
+class ObjectSetter implements SetterInterface
 {
+
+
     public function __construct(
-        protected Arr $dto,
+        protected DataTransferObject  $dto,  
         protected ReflectionProperty $property,
     )
     {
@@ -32,6 +34,6 @@ class ArrSetter implements SetterInterface
 
     public function set(mixed $value): void
     {
-        $this->dto[$this->property->getName()] = $value;
+        $this->property->setValue($this->dto, $value);
     }
 }

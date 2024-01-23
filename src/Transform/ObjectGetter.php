@@ -1,9 +1,10 @@
 <?php
 
-namespace Paulo;
+namespace Paulo\Transform;
 
-use ReflectionProperty;
+use Paulo\DataTransferObject;
 use Paulo\Interfaces\GetterInterface;
+use ReflectionProperty;
 
 /**
  * @implements GetterInterface<DataTransferObject>
