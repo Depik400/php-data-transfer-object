@@ -1,14 +1,9 @@
 <?php
 
-namespace Paulo;
+namespace Paulo\Pipeline;
 
-use Paulo\Object\Arr;
-use ReflectionAttribute;
-use ReflectionProperty;
-use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
 use Paulo\Pipelines\AbstractPipe;
 use Paulo\Pipelines\DefaultParsePipe;
-use Paulo\Pipelines\ParsePipe as PipelinesParsePipeline;
 
 /**
  * @extends Pipeline<ArrGetter,ObjectSetter>

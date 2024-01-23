@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Paulo\Pipelines;
 
-use ReflectionProperty;
 use Paulo\Attributes\PropertyParseArray;
-use Paulo\PipelineResult;
+use Paulo\Pipeline\PipelineResult;
+use ReflectionProperty;
 
 /**
  * @extends AbstractPipe<PropertyParseArray>
@@ -16,7 +16,7 @@ class ParseArrayPipe extends ParsePipe
      * @param ReflectionProperty  $property
      * @param array<string,mixed> $source
      * @param mixed|null          $value
-     * @return PipelineResult
+     * @return \Paulo\Pipeline\PipelineResult
      */
     public function execute(ReflectionProperty $property, mixed $value = null): PipelineResult
     {

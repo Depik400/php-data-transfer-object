@@ -2,7 +2,7 @@
 
 namespace Paulo\Pipelines;
 
-use Paulo\PipelineResult;
+use Paulo\Pipeline\PipelineResult;
 
 /**
  * @template T

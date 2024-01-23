@@ -1,14 +1,13 @@
 <?php
 
-namespace Paulo;
+namespace Paulo\Pipeline;
 
-use ReflectionAttribute;
-use ReflectionProperty;
 use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Interfaces\SetterInterface;
 use Paulo\Pipelines\AbstractPipe;
-use Paulo\Pipelines\DefaultParsePipe;
+use ReflectionAttribute;
+use ReflectionProperty;
 
 /**
  * @template TGetter of GetterInterface
@@ -18,11 +17,11 @@ abstract class Pipeline
 {
     protected ReflectionProperty $property;
     /**
-     * @var TGetter
+     * @var GetterInterface
      */
     protected GetterInterface $getter;
     /**
-     * @var TSetter
+     * @var SetterInterface
      */
     protected SetterInterface $setter;
 
@@ -33,7 +32,7 @@ abstract class Pipeline
     }
 
     /**
-     * @param TGetter $source
+     * @param GetterInterface $source
      * @return $this
      */
     public function source(GetterInterface $source): static
@@ -43,7 +42,7 @@ abstract class Pipeline
     }
 
     /**
-     * @param TSetter $source
+     * @param SetterInterface $source
      * @return $this
      */
     public function destination(SetterInterface $source): static

@@ -1,9 +1,9 @@
 <?php
 namespace Paulo\Pipelines;
 
-use \ReflectionClass;
 use Paulo\DataTransferObject;
-use Paulo\PipelineResult;
+use Paulo\Pipeline\PipelineResult;
+use ReflectionClass;
 
 /**
  * @extends AbstractPipe<null>

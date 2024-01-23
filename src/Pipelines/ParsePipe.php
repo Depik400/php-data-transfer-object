@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Paulo\Pipelines;
 
 use Paulo\Attributes\PropertyParse;
-use Paulo\PipelineResult;
+use Paulo\Pipeline\PipelineResult;
 
 /**
  * @extends AbstractPipe<PropertyParse>

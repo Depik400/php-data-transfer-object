@@ -2,15 +2,18 @@
 
 namespace Paulo;
 
-use ReflectionAttribute;
-use ReflectionClass;
-use ReflectionProperty;
 use Paulo\Attributes\Interfaces\AttributePropertyBoth;
 use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
 use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Interfaces\SetterInterface;
 use Paulo\Object\Arr;
+use Paulo\Pipeline\ParsePipeline;
+use Paulo\Pipeline\Pipeline;
+use Paulo\Pipeline\SerializePipeline;
+use ReflectionAttribute;
+use ReflectionClass;
+use ReflectionProperty;
 use function array_merge;
 
 class DataTransferObject

@@ -1,6 +1,6 @@
 <?php
 
-namespace Paulo;
+namespace Paulo\Pipeline;
 
 class PipelineResult
 {

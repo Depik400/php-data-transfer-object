@@ -32,7 +32,6 @@ class ArrSetter implements SetterInterface
 
     public function set(mixed $value): void
     {
-        echo sprintf("isset(%b)", isset($this->property));
         $this->dto[$this->property->getName()] = $value;
     }
 }

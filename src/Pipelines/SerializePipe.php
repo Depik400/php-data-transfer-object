@@ -6,8 +6,7 @@ namespace Paulo\Pipelines;
 use Exception;
 use Paulo\Attributes\PropertySerializeArray;
 use Paulo\Enums\PhpType;
-use Paulo\Interfaces\GetterInterface;
-use Paulo\PipelineResult;
+use Paulo\Pipeline\PipelineResult;
 
 /** @extends AbstractPipe<PropertySerializeArray> */
 class SerializePipe extends AbstractPipe

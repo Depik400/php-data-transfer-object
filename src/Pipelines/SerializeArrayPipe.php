@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Paulo\Pipelines;
 
-use Paulo\PipelineResult;
+use Paulo\Pipeline\PipelineResult;
 
 class SerializeArrayPipe extends SerializePipe
 {

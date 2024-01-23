@@ -1,14 +1,8 @@
 <?php
 
-namespace Paulo;
+namespace Paulo\Pipeline;
 
-use Paulo\Object\Arr;
-use ReflectionAttribute;
-use ReflectionProperty;
-use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
-use Paulo\Interfaces\GetterInterface;
 use Paulo\Pipelines\AbstractPipe;
-use Paulo\Pipelines\DefaultParsePipe;
 use Paulo\Pipelines\DefaultSerializePipe;
 
 /**
