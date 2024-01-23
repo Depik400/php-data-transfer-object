@@ -11,18 +11,18 @@ use Paulo\Pipelines\AbstractPipe;
 use Paulo\Pipelines\DefaultParsePipe;
 
 /**
- * @template TGetter
- * @template TSetter
+ * @template TGetter of GetterInterface
+ * @template TSetter of SetterInterface
  */
 abstract class Pipeline
 {
     protected ReflectionProperty $property;
     /**
-     * @var GetterInterface<TGetter>
+     * @var TGetter
      */
     protected GetterInterface $getter;
     /**
-     * @var SetterInterface<TSetter>
+     * @var TSetter
      */
     protected SetterInterface $setter;
 
@@ -33,7 +33,7 @@ abstract class Pipeline
     }
 
     /**
-     * @param GetterInterface<TGetter> $source
+     * @param TGetter $source
      * @return $this
      */
     public function source(GetterInterface $source): static
@@ -43,7 +43,7 @@ abstract class Pipeline
     }
 
     /**
-     * @param SetterInterface<TSetter> $source
+     * @param TSetter $source
      * @return $this
      */
     public function destination(SetterInterface $source): static

@@ -11,7 +11,7 @@ use Paulo\Pipelines\DefaultParsePipe;
 use Paulo\Pipelines\ParsePipe as PipelinesParsePipeline;
 
 /**
- * @extends Pipeline<Arr,DataTransferObject>
+ * @extends Pipeline<ArrGetter,ObjectSetter>
  */
 class ParsePipeline extends Pipeline
 {

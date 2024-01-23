@@ -22,6 +22,7 @@ class DataTransferObject
      */
     public static function wrap(array|DataTransferObject $wrap): static
     {
+        //@phpstan-ignore-next-line
         return (new static)->fill($wrap);
     }
 
@@ -111,7 +112,7 @@ class DataTransferObject
     /**
      * @param DataTransferObject $source
      * @param ReflectionProperty $property
-     * @return GetterInterface<DataTransferObject>
+     * @return ObjectGetter
      */
     protected function getObjectGetter(mixed $source, ReflectionProperty $property): GetterInterface
     {
@@ -121,7 +122,7 @@ class DataTransferObject
     /**
      * @param Arr|DataTransferObject $source
      * @param ReflectionProperty     $property
-     * @return SetterInterface<DataTransferObject>
+     * @return ObjectSetter
      */
     protected function getObjectSetter(mixed $source, ReflectionProperty $property): SetterInterface
     {
@@ -131,7 +132,7 @@ class DataTransferObject
     /**
      * @param mixed              $source
      * @param ReflectionProperty $property
-     * @return GetterInterface<Arr>
+     * @return ArrGetter
      */
     protected function getArrGetter(mixed $source, ReflectionProperty $property): GetterInterface
     {
@@ -141,7 +142,7 @@ class DataTransferObject
     /**
      * @param Arr|DataTransferObject $source
      * @param ReflectionProperty     $property
-     * @return SetterInterface<Arr>
+     * @return ArrSetter
      */
     protected function getArrSetter(mixed $source, ReflectionProperty $property): SetterInterface
     {
@@ -149,7 +150,7 @@ class DataTransferObject
     }
 
     /**
-     * @return Pipeline<DataTransferObject,Arr>
+     * @return Pipeline<ObjectGetter,ArrSetter>
      */
     protected function getSerializePipeline(): Pipeline
     {
@@ -157,7 +158,7 @@ class DataTransferObject
     }
 
     /**
-     * @return Pipeline<Arr,DataTransferObject>
+     * @return Pipeline<ArrGetter,ObjectSetter>
      */
     protected function getParsePipeline(): Pipeline
     {

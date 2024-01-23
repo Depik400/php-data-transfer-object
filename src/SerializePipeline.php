@@ -12,7 +12,7 @@ use Paulo\Pipelines\DefaultParsePipe;
 use Paulo\Pipelines\DefaultSerializePipe;
 
 /**
- * @extends Pipeline<DataTransferObject,Arr>
+ * @extends Pipeline<ObjectGetter,ArrSetter>
  */
 class SerializePipeline extends Pipeline
 {
