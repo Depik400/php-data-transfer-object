@@ -14,6 +14,13 @@ class ArrSetter implements SetterInterface
 
     protected \ReflectionProperty $property;
 
+    public function __construct(
+        protected Arr$object,
+        protected \ReflectionProperty $reflectionProperty
+    )
+    {
+    }
+
     public function setDestination($object): static
     {
         $this->dto = $object;

@@ -92,19 +92,19 @@ class DataTransferObject
     }
 
     protected function getObjectGetter($source, ReflectionProperty $property): GetterInterface {
-        return (new ObjectGetter())->setSource($source)->setProperty($property);
+        return new ObjectGetter($source, $property);
     }
 
     protected function getObjectSetter(Arr|DataTransferObject $source, ReflectionProperty $property): SetterInterface {
-        return (new ObjectSetter())->setDestination($source)->setProperty($property);
+        return new ObjectSetter($source, $property);
     }
 
     protected function getArrGetter($source, ReflectionProperty $property): GetterInterface {
-        return (new ArrGetter())->setSource($source)->setProperty($property);
+        return (new ArrGetter($source, $property));
     }
 
     protected function getArrSetter(Arr|DataTransferObject $source, ReflectionProperty $property): SetterInterface {
-        return (new ArrSetter())->setDestination($source)->setProperty($property);
+        return new ArrSetter($source, $property);
     }
     /**
      * Undocumented function

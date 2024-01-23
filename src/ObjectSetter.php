@@ -10,9 +10,14 @@ use Paulo\Object\Arr;
  */
 class ObjectSetter implements SetterInterface
 {
-    protected DataTransferObject $dto;
 
-    protected \ReflectionProperty $property;
+
+    public function __construct(
+        protected DataTransferObject  $dto,
+        protected \ReflectionProperty $property,
+    )
+    {
+    }
 
     public function setDestination($object): static
     {

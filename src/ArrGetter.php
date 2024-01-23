@@ -11,9 +11,12 @@ use Paulo\Object\Arr;
  */
 class ArrGetter implements GetterInterface
 {
-    protected Arr $dto;
-
-    protected ReflectionProperty $property;
+    public function __construct(
+        protected Arr                $dto,
+        protected ReflectionProperty $property,
+    )
+    {
+    }
 
     public function setSource($object): static
     {

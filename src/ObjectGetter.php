@@ -10,9 +10,12 @@ use Paulo\Interfaces\GetterInterface;
  */
 class ObjectGetter implements GetterInterface
 {
-    protected DataTransferObject $dto;
-
-    protected ReflectionProperty $property;
+    public function __construct(
+        protected DataTransferObject $dto,
+        protected ReflectionProperty $property,
+    )
+    {
+    }
 
     public function setSource($object): static
     {
