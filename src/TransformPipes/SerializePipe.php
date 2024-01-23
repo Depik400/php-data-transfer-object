@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Paulo\Pipelines;
+namespace Paulo\TransformPipes;
 
 use Exception;
 use Paulo\Attributes\PropertySerializeArray;

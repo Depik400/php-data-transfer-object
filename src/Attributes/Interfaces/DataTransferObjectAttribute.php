@@ -2,7 +2,7 @@
 
 namespace Paulo\Attributes\Interfaces;
 
-use Paulo\Pipelines\AbstractPipe;
+use Paulo\TransformPipes\AbstractPipe;
 
 interface DataTransferObjectAttribute {
     /** @return AbstractPipe<static> */

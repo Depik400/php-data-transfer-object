@@ -4,9 +4,9 @@ namespace Paulo\Attributes;
 use Attribute;
 use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
 use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
-use Paulo\Pipelines\AbstractPipe;
-use Paulo\Pipelines\ParsePipe;
-use Paulo\Pipelines\SerializePipe;
+use Paulo\TransformPipes\AbstractPipe;
+use Paulo\TransformPipes\ParsePipe;
+use Paulo\TransformPipes\SerializePipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class PropertyParse implements AttributePropertyParseInterface, DataTransferObjectAttribute

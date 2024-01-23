@@ -2,8 +2,8 @@
 
 namespace Paulo\Pipeline;
 
-use Paulo\Pipelines\AbstractPipe;
-use Paulo\Pipelines\DefaultSerializePipe;
+use Paulo\TransformPipes\AbstractPipe;
+use Paulo\TransformPipes\DefaultSerializePipe;
 
 /**
  * @extends Pipeline<ObjectGetter,ArrSetter>

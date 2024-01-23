@@ -1,6 +1,6 @@
 <?php
 
-namespace Paulo\Pipelines;
+namespace Paulo\TransformPipes;
 
 use Paulo\Pipeline\PipelineResult;
 

@@ -5,8 +5,8 @@ namespace Paulo\Attributes;
 
 use Paulo\Attributes\Interfaces\AttributePropertyBoth;
 use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
-use Paulo\Pipelines\AbstractPipe;
-use Paulo\Pipelines\PropertyIgnorePipe;
+use Paulo\TransformPipes\AbstractPipe;
+use Paulo\TransformPipes\PropertyIgnorePipe;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY|\Attribute::TARGET_CLASS_CONSTANT)]
 class PropertyIgnore implements AttributePropertyBoth, DataTransferObjectAttribute

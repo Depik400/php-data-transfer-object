@@ -3,8 +3,8 @@
 namespace Paulo\Attributes;
 
 use Attribute;
-use Paulo\Pipelines\AbstractPipe;
-use Paulo\Pipelines\SerializeArrayPipe;
+use Paulo\TransformPipes\AbstractPipe;
+use Paulo\TransformPipes\SerializeArrayPipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY|Attribute::IS_REPEATABLE)]
 class PropertySerializeArray extends PropertySerialize

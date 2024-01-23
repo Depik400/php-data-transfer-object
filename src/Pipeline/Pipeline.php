@@ -5,7 +5,7 @@ namespace Paulo\Pipeline;
 use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Interfaces\SetterInterface;
-use Paulo\Pipelines\AbstractPipe;
+use Paulo\TransformPipes\AbstractPipe;
 use ReflectionAttribute;
 use ReflectionProperty;
 

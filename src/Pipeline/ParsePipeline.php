@@ -2,8 +2,8 @@
 
 namespace Paulo\Pipeline;
 
-use Paulo\Pipelines\AbstractPipe;
-use Paulo\Pipelines\DefaultParsePipe;
+use Paulo\TransformPipes\AbstractPipe;
+use Paulo\TransformPipes\DefaultParsePipe;
 
 /**
  * @extends Pipeline<ArrGetter,ObjectSetter>

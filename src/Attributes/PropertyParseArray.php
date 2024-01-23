@@ -4,8 +4,8 @@ namespace Paulo\Attributes;
 
 use Attribute;
 use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
-use Paulo\Pipelines\AbstractPipe;
-use Paulo\Pipelines\ParseArrayPipe;
+use Paulo\TransformPipes\AbstractPipe;
+use Paulo\TransformPipes\ParseArrayPipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 
