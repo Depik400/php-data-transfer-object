@@ -1,13 +1,21 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Interfaces;
+namespace Paulo\Interfaces;
 
 use ReflectionProperty;
-use Svyazcom\DataTransferObject\DataTransferObject;
-use Svyazcom\DataTransferObject\Object\Arr;
+use Paulo\DataTransferObject;
+use Paulo\Object\Arr;
+use Swoole\FastCGI\Record\Data;
 
+/**
+ * @template T
+ */
 interface GetterInterface {
-    public function setSource(DataTransferObject|Arr|array $object): static;
+    /**
+     * @param T $object
+     * @return $this
+     */
+    public function setSource($object): static;
 
     public function setProperty(ReflectionProperty $reflectionProperty): static;
 

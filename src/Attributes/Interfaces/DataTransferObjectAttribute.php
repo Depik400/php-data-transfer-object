@@ -1,10 +1,10 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Attributes\Interfaces;
+namespace Paulo\Attributes\Interfaces;
 
-use Svyazcom\DataTransferObject\Pipelines\AbstractPipeline;
+use Paulo\Pipelines\AbstractPipe;
 
 interface DataTransferObjectAttribute {
-    /** @return AbstractPipeline<static> */
-    public function getPipeline(): AbstractPipeline;
+    /** @return AbstractPipe<static> */
+    public function getPipeline(): AbstractPipe;
 }

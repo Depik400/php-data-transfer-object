@@ -1,13 +1,13 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Attributes;
+namespace Paulo\Attributes;
 
-use Svyazcom\DataTransferObject\Enums\PhpType;
+use Paulo\Enums\PhpType;
 use Attribute;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\AttributePropertySerializeInterface;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\DataTransferObjectAttribute;
-use Svyazcom\DataTransferObject\Pipelines\AbstractPipeline;
-use Svyazcom\DataTransferObject\Pipelines\SerializePipeline;
+use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
+use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
+use Paulo\Pipelines\AbstractPipe;
+use Paulo\Pipelines\SerializePipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
 class PropertySerialize implements AttributePropertySerializeInterface, DataTransferObjectAttribute
@@ -27,10 +27,10 @@ class PropertySerialize implements AttributePropertySerializeInterface, DataTran
     ) {
     }
 
-    /** @return AbstractPipeline<static> */
-    public function getPipeline(): AbstractPipeline
+    /** @return AbstractPipe<static> */
+    public function getPipeline(): AbstractPipe
     {
-        return new SerializePipeline($this);
+        return new SerializePipe($this);
     }
 
     public function getCasterClassName(): string

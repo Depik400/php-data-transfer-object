@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Svyazcom\DataTransferObject\Pipelines;
+namespace Paulo\Pipelines;
 
-use Svyazcom\DataTransferObject\Attributes\PropertyParse;
-use Svyazcom\DataTransferObject\PipelineResult;
+use Paulo\Attributes\PropertyParse;
+use Paulo\PipelineResult;
 
 /**
- * @extends AbstractPipeline<PropertyParse>
+ * @extends AbstractPipe<PropertyParse>
  */
-class ParsePipeline extends AbstractPipeline
+class ParsePipe extends AbstractPipe
 {
 
     /**
@@ -17,7 +17,7 @@ class ParsePipeline extends AbstractPipeline
      */
     public function execute(\ReflectionProperty $property, $value = null): PipelineResult
     {
-        return (new PipelineResult())->setResult($this->create($source[$property->name] ?? null))->setNext(true);
+        return (new PipelineResult())->setResult($this->create($value))->setNext(true);
     }
 
     protected function create($value)

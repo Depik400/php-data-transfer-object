@@ -1,12 +1,12 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Attributes;
+namespace Paulo\Attributes;
 use Attribute;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\AttributePropertyParseInterface;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\DataTransferObjectAttribute;
-use Svyazcom\DataTransferObject\Pipelines\AbstractPipeline;
-use Svyazcom\DataTransferObject\Pipelines\ParsePipeline;
-use Svyazcom\DataTransferObject\Pipelines\SerializePipeline;
+use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
+use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
+use Paulo\Pipelines\AbstractPipe;
+use Paulo\Pipelines\ParsePipe;
+use Paulo\Pipelines\SerializePipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class PropertyParse implements AttributePropertyParseInterface, DataTransferObjectAttribute
@@ -40,8 +40,8 @@ class PropertyParse implements AttributePropertyParseInterface, DataTransferObje
     }
 
 
-    public function getPipeline(): AbstractPipeline
+    public function getPipeline(): AbstractPipe
     {
-        return (new ParsePipeline($this));
+        return (new ParsePipe($this));
     }
 }

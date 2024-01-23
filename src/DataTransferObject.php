@@ -1,18 +1,17 @@
 <?php
 
-namespace Svyazcom\DataTransferObject;
+namespace Paulo;
 
 use Reflection;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionProperty;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\AttributePropertyBoth;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\AttributePropertyGetterInterface;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\AttributePropertyParseInterface;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\AttributePropertySerializeInterface;
-use Svyazcom\DataTransferObject\Interfaces\GetterInterface;
-use Svyazcom\DataTransferObject\Interfaces\SetterInterface;
-use Svyazcom\DataTransferObject\Object\Arr;
+use Paulo\Attributes\Interfaces\AttributePropertyBoth;
+use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
+use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
+use Paulo\Interfaces\GetterInterface;
+use Paulo\Interfaces\SetterInterface;
+use Paulo\Object\Arr;
 
 class DataTransferObject
 {
@@ -56,7 +55,10 @@ class DataTransferObject
             $property->getAttributes(AttributePropertyParseInterface::class,  ReflectionAttribute::IS_INSTANCEOF),
         );
         $pipeline = $this->getParsePipeline();
-        $pipeline->source($this->getGetter($wrap, $property))->property($property)->destination($this->getSetter($this, $property));
+        $pipeline
+            ->source($this->getArrGetter(new Arr($wrap), $property))
+            ->destination($this->getObjectSetter($this, $property))
+            ->property($property);
         $pipeline->pipeAttributes($attributes);
     }
 
@@ -75,7 +77,10 @@ class DataTransferObject
     {
         $attributes = $this->getSerializeAttributes($property);
         $pipeline = $this->getSerializePipeline();
-        $pipeline->property($property)->source($this->getGetter($this, $property))->destination($this->getSetter($result, $property));
+        $pipeline
+            ->source($this->getObjectGetter($this, $property))
+            ->destination($this->getArrSetter($result, $property))
+            ->property($property);
         $pipeline->pipeAttributes($attributes);
     }
 
@@ -86,17 +91,25 @@ class DataTransferObject
         );
     }
 
-    protected function getGetter($source, ReflectionProperty $property): GetterInterface {
-        return (new Getter())->setSource($source)->setProperty($property);
+    protected function getObjectGetter($source, ReflectionProperty $property): GetterInterface {
+        return (new ObjectGetter())->setSource($source)->setProperty($property);
     }
 
-    protected function getSetter(Arr|DataTransferObject $source, ReflectionProperty $property): SetterInterface {
-        return (new Setter())->setDestination($source)->setProperty($property);
+    protected function getObjectSetter(Arr|DataTransferObject $source, ReflectionProperty $property): SetterInterface {
+        return (new ObjectSetter())->setDestination($source)->setProperty($property);
+    }
+
+    protected function getArrGetter($source, ReflectionProperty $property): GetterInterface {
+        return (new ArrGetter())->setSource($source)->setProperty($property);
+    }
+
+    protected function getArrSetter(Arr|DataTransferObject $source, ReflectionProperty $property): SetterInterface {
+        return (new ArrSetter())->setDestination($source)->setProperty($property);
     }
     /**
      * Undocumented function
      *
-     * @return SerializePipeline
+     * @return Pipeline
      */
     protected function getSerializePipeline() {
         return new SerializePipeline();
@@ -105,7 +118,7 @@ class DataTransferObject
     /**
      * Undocumented function
      *
-     * @return ParsePipeline
+     * @return Pipeline
      */
     protected function getParsePipeline() {
         return new ParsePipeline();

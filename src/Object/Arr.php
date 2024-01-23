@@ -1,24 +1,36 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Object;
+namespace Paulo\Object;
 
-class Arr extends \ArrayObject
+class Arr implements \ArrayAccess
 {
-    public function __construct($array = array(), $flags = 2)
+    public function __construct(
+        protected array $arr = []
+    )
     {
-        // let’s give the objects the right and not the inherited name
-        $class = get_class($this);
-
-        foreach ($array as $offset => $value)
-            $this->offsetSet($offset, is_array($value) ? new $class($value) : $value);
-
-        $this->setFlags($flags);
     }
 
-    public function getArray()
+    public function getArray(): array {
+        return $this->arr;
+    }
+
+    public function offsetExists(mixed $offset): bool
     {
-        return array_map(function ($item) {
-            return is_object($item) ? $item->getArray() : $item;
-        }, $this->getArrayCopy());
+        return array_key_exists($offset,$this->arr);
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->arr[$offset] ?? null;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        $this->arr[$offset] = $value;
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        unset($this->arr[$offset]);
     }
 }

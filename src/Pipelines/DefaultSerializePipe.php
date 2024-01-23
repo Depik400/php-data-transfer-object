@@ -1,14 +1,14 @@
 <?php
-namespace Svyazcom\DataTransferObject\Pipelines;
+namespace Paulo\Pipelines;
 
 use \ReflectionClass;
-use Svyazcom\DataTransferObject\DataTransferObject;
-use Svyazcom\DataTransferObject\PipelineResult;
+use Paulo\DataTransferObject;
+use Paulo\PipelineResult;
 
 /**
- * @extends AbstractPipeline<null>
+ * @extends AbstractPipe<null>
  */
-class DefaultSerializePipeline extends AbstractPipeline
+class DefaultSerializePipe extends AbstractPipe
 {
 
     /**

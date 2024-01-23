@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Svyazcom\DataTransferObject\Pipelines;
+namespace Paulo\Pipelines;
 
-use Svyazcom\DataTransferObject\PipelineResult;
+use Paulo\PipelineResult;
 
-class SerializeArrayPipeline extends SerializePipeline
+class SerializeArrayPipe extends SerializePipe
 {
 
     /**
@@ -14,9 +14,13 @@ class SerializeArrayPipeline extends SerializePipeline
     public function execute(\ReflectionProperty $property, $value = null): PipelineResult
     {
         $generated = [];
+        $result = (new PipelineResult())->setNext(true);
+        if(is_null($value)) {
+            return $result->setResult($value);
+        }
         foreach ($value as $values) {
             $generated[] = $this->cast($values);
         }
-        return (new PipelineResult())->setResult($generated)->setNext(true);
+        return $result->setResult($generated);
     }
 }

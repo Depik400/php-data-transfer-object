@@ -1,6 +1,6 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Attributes\Interfaces;
+namespace Paulo\Attributes\Interfaces;
 
 interface AttributePropertySerializeInterface
 {

@@ -1,13 +1,20 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Interfaces;
+namespace Paulo\Interfaces;
 
 use ReflectionProperty;
-use Svyazcom\DataTransferObject\DataTransferObject;
-use Svyazcom\DataTransferObject\Object\Arr;
+use Paulo\DataTransferObject;
+use Paulo\Object\Arr;
 
+/**
+ * @template T
+ */
 interface SetterInterface {
-    public function setDestination(DataTransferObject|Arr $object): static;
+    /**
+     * @param T $object
+     * @return $this
+     */
+    public function setDestination($object): static;
 
     public function setProperty(ReflectionProperty $reflectionProperty): static;
 

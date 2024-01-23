@@ -1,14 +1,14 @@
 <?php
 
-namespace Svyazcom\DataTransferObject;
+namespace Paulo;
 
 use ReflectionAttribute;
 use ReflectionProperty;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\DataTransferObjectAttribute;
-use Svyazcom\DataTransferObject\Interfaces\GetterInterface;
-use Svyazcom\DataTransferObject\Interfaces\SetterInterface;
-use Svyazcom\DataTransferObject\Pipelines\AbstractPipeline;
-use Svyazcom\DataTransferObject\Pipelines\DefaultParsePipeline;
+use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
+use Paulo\Interfaces\GetterInterface;
+use Paulo\Interfaces\SetterInterface;
+use Paulo\Pipelines\AbstractPipe;
+use Paulo\Pipelines\DefaultParsePipe;
 
 abstract class Pipeline
 {
@@ -41,7 +41,6 @@ abstract class Pipeline
      * Undocumented function
      *
      * @param ReflectionAttribute<DataTransferObjectAttribute>[] $attributes
-     * @return mixed
      */
     public function pipeAttributes(array $attributes)
     {
@@ -58,7 +57,7 @@ abstract class Pipeline
         $this->setter->set($pipedItem);
     }
 
-    abstract protected function execute(AbstractPipeline $pipeline, $pipedItem);
+    abstract protected function execute(AbstractPipe $pipeline, $pipedItem);
 
     public function getPipelines(array $attributes)
     {

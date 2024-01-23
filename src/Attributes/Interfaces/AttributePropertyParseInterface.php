@@ -1,8 +1,8 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Attributes\Interfaces;
+namespace Paulo\Attributes\Interfaces;
 
-use Svyazcom\DataTransferObject\Pipelines\AbstractPipeline;
+use Paulo\Pipelines\AbstractPipe;
 
 interface AttributePropertyParseInterface
 {

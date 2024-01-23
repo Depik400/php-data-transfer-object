@@ -1,6 +1,6 @@
 <?php
 
-namespace Svyazcom\DataTransferObject;
+namespace Paulo;
 
 class PipelineResult {
     /** @var mixed $result */

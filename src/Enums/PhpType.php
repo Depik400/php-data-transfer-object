@@ -1,6 +1,6 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Enums;
+namespace Paulo\Enums;
 
 enum PhpType: string {
     case Boolean = "boolean";

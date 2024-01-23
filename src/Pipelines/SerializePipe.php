@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Svyazcom\DataTransferObject\Pipelines;
+namespace Paulo\Pipelines;
 
 use Exception;
-use Svyazcom\DataTransferObject\Attributes\PropertySerializeArray;
-use Svyazcom\DataTransferObject\Enums\PhpType;
-use Svyazcom\DataTransferObject\Interfaces\GetterInterface;
-use Svyazcom\DataTransferObject\PipelineResult;
+use Paulo\Attributes\PropertySerializeArray;
+use Paulo\Enums\PhpType;
+use Paulo\Interfaces\GetterInterface;
+use Paulo\PipelineResult;
 
-/** @extends AbstractPipeline<PropertySerializeArray> */
-class SerializePipeline extends AbstractPipeline
+/** @extends AbstractPipe<PropertySerializeArray> */
+class SerializePipe extends AbstractPipe
 {
 
     /**

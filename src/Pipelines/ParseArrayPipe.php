@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Svyazcom\DataTransferObject\Pipelines;
+namespace Paulo\Pipelines;
 
 use ReflectionProperty;
-use Svyazcom\DataTransferObject\Attributes\PropertyParseArray;
-use Svyazcom\DataTransferObject\PipelineResult;
+use Paulo\Attributes\PropertyParseArray;
+use Paulo\PipelineResult;
 
 /**
- * @extends AbstractPipeline<PropertyParseArray>
+ * @extends AbstractPipe<PropertyParseArray>
  */
-class ParseArrayPipeline extends ParsePipeline
+class ParseArrayPipe extends ParsePipe
 {
     /**
      * @param ReflectionProperty  $property
@@ -21,9 +21,13 @@ class ParseArrayPipeline extends ParsePipeline
     public function execute(ReflectionProperty $property, $value = null): PipelineResult
     {
         $generated = [];
+        $result = (new PipelineResult())->setNext(true);
+        if(is_null($value)) {
+            return $result->setResult(null);
+        }
         foreach ($value as $item) {
             $generated[] = $this->create($item);
         }
-        return (new PipelineResult())->setResult($generated)->setNext(true);
+        return $result->setResult($generated);
     }
 }

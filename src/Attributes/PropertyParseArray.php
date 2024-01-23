@@ -1,18 +1,18 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Attributes;
+namespace Paulo\Attributes;
 
 use Attribute;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\DataTransferObjectAttribute;
-use Svyazcom\DataTransferObject\Pipelines\AbstractPipeline;
-use Svyazcom\DataTransferObject\Pipelines\ParseArrayPipeline;
+use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
+use Paulo\Pipelines\AbstractPipe;
+use Paulo\Pipelines\ParseArrayPipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 
 class PropertyParseArray extends PropertyParse implements DataTransferObjectAttribute
 {
-    public function getPipeline(): AbstractPipeline
+    public function getPipeline(): AbstractPipe
     {
-        return (new ParseArrayPipeline($this));
+        return (new ParseArrayPipe($this));
     }
 }

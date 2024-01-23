@@ -1,8 +1,8 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Pipelines;
+namespace Paulo\Pipelines;
 
-use Svyazcom\DataTransferObject\PipelineResult;
+use Paulo\PipelineResult;
 
 /**
  * @template T

@@ -1,16 +1,16 @@
 <?php
 
-namespace Svyazcom\DataTransferObject\Attributes;
+namespace Paulo\Attributes;
 
 use Attribute;
-use Svyazcom\DataTransferObject\Pipelines\AbstractPipeline;
-use Svyazcom\DataTransferObject\Pipelines\SerializeArrayPipeline;
+use Paulo\Pipelines\AbstractPipe;
+use Paulo\Pipelines\SerializeArrayPipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY|Attribute::IS_REPEATABLE)]
 class PropertySerializeArray extends PropertySerialize
 {
-    public function getPipeline(): AbstractPipeline
+    public function getPipeline(): AbstractPipe
     {
-        return (new SerializeArrayPipeline($this));
+        return (new SerializeArrayPipe($this));
     }
 }

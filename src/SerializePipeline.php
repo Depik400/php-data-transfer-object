@@ -1,18 +1,18 @@
 <?php
 
-namespace Svyazcom\DataTransferObject;
+namespace Paulo;
 
 use ReflectionAttribute;
 use ReflectionProperty;
-use Svyazcom\DataTransferObject\Attributes\Interfaces\DataTransferObjectAttribute;
-use Svyazcom\DataTransferObject\Interfaces\GetterInterface;
-use Svyazcom\DataTransferObject\Pipelines\AbstractPipeline;
-use Svyazcom\DataTransferObject\Pipelines\DefaultParsePipeline;
-use Svyazcom\DataTransferObject\Pipelines\DefaultSerializePipeline;
+use Paulo\Attributes\Interfaces\DataTransferObjectAttribute;
+use Paulo\Interfaces\GetterInterface;
+use Paulo\Pipelines\AbstractPipe;
+use Paulo\Pipelines\DefaultParsePipe;
+use Paulo\Pipelines\DefaultSerializePipe;
 
 class SerializePipeline extends Pipeline
 {
-    protected function execute(AbstractPipeline $pipeline, $pipedItem): PipelineResult
+    protected function execute(AbstractPipe $pipeline, $pipedItem): PipelineResult
     {
         return $pipeline->execute($this->property, $pipedItem);
     }
@@ -20,7 +20,7 @@ class SerializePipeline extends Pipeline
     public function getPipelines(array $attributes)
     {
         $pipelines = parent::getPipelines($attributes);
-        array_unshift($pipelines, new DefaultSerializePipeline(null));
+        array_unshift($pipelines, new DefaultSerializePipe(null));
         return $pipelines;
     }
 }
