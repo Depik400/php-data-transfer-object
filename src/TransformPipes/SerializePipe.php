@@ -30,6 +30,9 @@ class SerializePipe extends AbstractPipe
         if ($fromType instanceof PhpType) {
             return $fromType->value === \gettype($value);
         }
+        if(gettype($value) === $fromType) {
+            return true;
+        }
         return gettype($value) === PhpType::Object->value && \class_exists($fromType);
     }
 
