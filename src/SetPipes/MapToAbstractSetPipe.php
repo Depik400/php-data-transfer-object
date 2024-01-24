@@ -14,6 +14,7 @@ class MapToAbstractSetPipe extends AbstractSetPipe
     {
         //FIXME need refactoring
         $sections = explode('.', $this->attribute->getMapTo());
+        $sectionsCount = count($sections);
         $first = array_shift($sections);
         if (!isset($source[$first])) {
             $workerItem = [];
@@ -28,8 +29,13 @@ class MapToAbstractSetPipe extends AbstractSetPipe
             }
             $pointer = &$pointer[$section];
         }
-        $pointer[$last] = $value;
-        $source[$first] = $workerItem;
+        if ($sectionsCount > 1) {
+            $pointer[$last] = $value;
+            $source[$first] = $workerItem;
+        } else {
+            $source[$first] = $value;
+        }
+
         return new SetPipeResult(false);
     }
 }
