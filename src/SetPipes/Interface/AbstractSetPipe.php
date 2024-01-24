@@ -2,11 +2,11 @@
 
 namespace Paulo\SetPipes\Interface;
 
-use Paulo\Attributes\Interfaces\AttributePropertySetterInterface;
+use Paulo\Attributes\Abstract\SetTransformable;
 use Paulo\SetPipes\SetPipeResult;
 
 /**
- * @template T of AttributePropertySetterInterface
+ * @template T of SetTransformable
  */
 abstract class AbstractSetPipe
 {
@@ -14,7 +14,7 @@ abstract class AbstractSetPipe
      * @param T|null $attribute
      */
     public function __construct(
-        protected ?AttributePropertySetterInterface $attribute
+        protected ?SetTransformable $attribute
     )
     {
     }

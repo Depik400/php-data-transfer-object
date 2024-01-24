@@ -2,12 +2,12 @@
 
 namespace Paulo\Attributes;
 use Attribute;
-use Paulo\Attributes\Interfaces\AttributePropertySetterInterface;
-use Paulo\SetPipes\Interface\AbstractSetPipe;
-use Paulo\SetPipes\MapToAbstractSetPipe;
+use Paulo\Attributes\Abstract\SetTransformable;
+use Paulo\SetPipes\MapToSetPipe;
+
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class PropertyMapTo implements AttributePropertySetterInterface {
+class PropertyMapTo extends SetTransformable {
     public function __construct(
         protected string $mapTo
     )
@@ -20,10 +20,10 @@ class PropertyMapTo implements AttributePropertySetterInterface {
     }
 
     /**
-     * @return AbstractSetPipe<static>
+     * @return MapToSetPipe
      */
-    public function getPipeline(): AbstractSetPipe
+    public function getPipeline(): MapToSetPipe
     {
-        return new MapToAbstractSetPipe($this);
+        return new MapToSetPipe($this);
     }
 }

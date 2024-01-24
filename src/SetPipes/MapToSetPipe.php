@@ -8,7 +8,7 @@ use Paulo\SetPipes\Interface\AbstractSetPipe;
 /**
  * @extends AbstractSetPipe<PropertyMapTo>
  */
-class MapToAbstractSetPipe extends AbstractSetPipe
+class MapToSetPipe extends AbstractSetPipe
 {
     public function execute(\ArrayAccess $source, string $property, mixed $value): SetPipeResult
     {

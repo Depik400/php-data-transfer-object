@@ -2,11 +2,11 @@
 
 namespace Paulo\SetPipes;
 
-use Paulo\Attributes\Interfaces\AttributePropertySetterInterface;
+use Paulo\Attributes\Abstract\SetTransformable;
 use Paulo\SetPipes\Interface\AbstractSetPipe;
 
 /**
- * @extends AbstractSetPipe<AttributePropertySetterInterface>
+ * @extends AbstractSetPipe<SetTransformable>
  */
 class DefaultAbstractSetPipe extends AbstractSetPipe
 {

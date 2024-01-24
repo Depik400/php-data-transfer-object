@@ -2,7 +2,7 @@
 
 namespace Paulo\Transform;
 
-use Paulo\Attributes\Interfaces\AttributePropertyGetterInterface;
+use Paulo\Attributes\Abstract\GetTransformable;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Object\Arr;
 use Paulo\Pipeline\GetPipeline;
@@ -38,7 +38,7 @@ class ArrGetter implements GetterInterface
     {
         return (new GetPipeline($this->dto, $this->property->getName()))
             ->getWithAttributes($this->property->getAttributes(
-                AttributePropertyGetterInterface::class,
+                GetTransformable::class,
                 \ReflectionAttribute::IS_INSTANCEOF)
             );
     }

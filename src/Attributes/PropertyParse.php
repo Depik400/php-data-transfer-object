@@ -2,14 +2,13 @@
 
 namespace Paulo\Attributes;
 use Attribute;
+use Paulo\Attributes\Abstract\Transformable;
 use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
-use Paulo\Attributes\Interfaces\TransformObjectAttribute;
 use Paulo\TransformPipes\AbstractPipe;
 use Paulo\TransformPipes\ParsePipe;
-use Paulo\TransformPipes\SerializePipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class PropertyParse implements AttributePropertyParseInterface, TransformObjectAttribute
+class PropertyParse extends Transformable implements AttributePropertyParseInterface
 {
     public function __construct(
         private readonly string $class,
@@ -38,7 +37,6 @@ class PropertyParse implements AttributePropertyParseInterface, TransformObjectA
     {
         return $this->method;
     }
-
 
     public function getPipeline(): AbstractPipe
     {

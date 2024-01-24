@@ -2,7 +2,7 @@
 
 namespace Paulo\Pipeline;
 
-use Paulo\Attributes\Interfaces\AttributePropertyGetterInterface;
+use Paulo\Attributes\Abstract\GetTransformable;
 use Paulo\GetPipes\AbstractGetPipe;
 use Paulo\GetPipes\DefaultGetPipe;
 use ReflectionAttribute;
@@ -17,7 +17,7 @@ class GetPipeline
     }
 
     /**
-     * @param ReflectionAttribute<AttributePropertyGetterInterface>[] $attributes
+     * @param ReflectionAttribute[] $attributes
      * @return mixed
      */
     public function getWithAttributes(array $attributes): mixed
@@ -35,13 +35,13 @@ class GetPipeline
     }
 
     /**
-     * @param ReflectionAttribute<AttributePropertyGetterInterface>[] $attributes
-     * @return AbstractGetPipe<AttributePropertyGetterInterface>[]
+     * @param ReflectionAttribute<GetTransformable>[] $attributes
+     * @return AbstractGetPipe<GetTransformable>[]
      */
     protected function getPipelines(array $attributes): array
     {
         $instances = array_map(fn(ReflectionAttribute $attribute) => $attribute->newInstance(), $attributes);
-        $pipelines = array_map(fn(AttributePropertyGetterInterface $attribute) => $attribute->getPipeline(), $instances);
+        $pipelines = array_map(fn(GetTransformable $attribute) => $attribute->getPipeline(), $instances);
         array_unshift($pipelines, new DefaultGetPipe(null));
         return $pipelines;
     }

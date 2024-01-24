@@ -2,7 +2,7 @@
 
 namespace Paulo\Pipeline;
 
-use Paulo\Attributes\Interfaces\AttributePropertySetterInterface;
+use Paulo\Attributes\Abstract\SetTransformable;
 use Paulo\SetPipes\DefaultAbstractSetPipe;
 use Paulo\SetPipes\Interface\AbstractSetPipe;
 use ReflectionAttribute;
@@ -22,7 +22,7 @@ class SetPipeline
 
     /**
      * @param mixed $value
-     * @param ReflectionAttribute<AttributePropertySetterInterface>[] $attributes
+     * @param ReflectionAttribute<SetTransformable>[] $attributes
      * @return void
      */
     public function setWithAttributes(mixed $value, array $attributes): void
@@ -37,13 +37,13 @@ class SetPipeline
     }
 
     /**
-     * @param ReflectionAttribute<AttributePropertySetterInterface>[] $attributes
-     * @return AbstractSetPipe<AttributePropertySetterInterface>[]
+     * @param ReflectionAttribute<SetTransformable>[] $attributes
+     * @return AbstractSetPipe<SetTransformable>[]
      */
     protected function getPipelines(array $attributes): array
     {
         $instances = array_map(fn(ReflectionAttribute $attribute) => $attribute->newInstance(), $attributes);
-        $pipelines = array_map(fn(AttributePropertySetterInterface $attribute) => $attribute->getPipeline(), $instances);
+        $pipelines = array_map(fn(SetTransformable $attribute) => $attribute->getPipeline(), $instances);
         $pipelines[] = new DefaultAbstractSetPipe(null);
         return $pipelines;
     }

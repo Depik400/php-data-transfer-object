@@ -2,15 +2,14 @@
 
 namespace Paulo\Attributes;
 
-use Paulo\Enums\PhpType;
 use Attribute;
+use Paulo\Attributes\Abstract\Transformable;
 use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
-use Paulo\Attributes\Interfaces\TransformObjectAttribute;
-use Paulo\TransformPipes\AbstractPipe;
+use Paulo\Enums\PhpType;
 use Paulo\TransformPipes\SerializePipe;
 
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
-class PropertySerialize implements AttributePropertySerializeInterface, TransformObjectAttribute
+class PropertySerialize extends Transformable implements AttributePropertySerializeInterface
 {
     /**
      * @template T
@@ -27,8 +26,8 @@ class PropertySerialize implements AttributePropertySerializeInterface, Transfor
     ) {
     }
 
-    /** @return AbstractPipe<static> */
-    public function getPipeline(): AbstractPipe
+    /** @return SerializePipe */
+    public function getPipeline(): SerializePipe
     {
         return new SerializePipe($this);
     }

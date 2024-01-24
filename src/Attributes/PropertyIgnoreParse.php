@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace Paulo\Attributes;
 
-use Paulo\Attributes\Interfaces\AttributePropertyBoth;
+use Paulo\Attributes\Abstract\Transformable;
 use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
-use Paulo\Attributes\Interfaces\TransformObjectAttribute;
-use Paulo\TransformPipes\AbstractPipe;
 use Paulo\TransformPipes\PropertyIgnorePipe;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY|\Attribute::TARGET_CLASS_CONSTANT)]
-class PropertyIgnoreParse implements AttributePropertyParseInterface, TransformObjectAttribute
+class PropertyIgnoreParse extends Transformable implements AttributePropertyParseInterface
 {
-    public function getPipeline(): AbstractPipe
+    /**
+     * @return PropertyIgnorePipe
+     */
+    public function getPipeline(): PropertyIgnorePipe
     {
         return new PropertyIgnorePipe($this);
     }

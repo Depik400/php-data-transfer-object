@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace Paulo\TransformPipes;
 
 use Exception;
+use Paulo\Attributes\PropertySerialize;
 use Paulo\Attributes\PropertySerializeArray;
 use Paulo\Enums\PhpType;
 use Paulo\Pipeline\PipelineResult;
 
-/** @extends AbstractPipe<PropertySerializeArray> */
+/** @extends AbstractPipe<PropertySerialize> */
 class SerializePipe extends AbstractPipe
 {
 

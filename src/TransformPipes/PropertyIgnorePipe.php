@@ -2,11 +2,12 @@
 
 namespace Paulo\TransformPipes;
 
-use Paulo\Attributes\PropertyIgnore;
+use Paulo\Attributes\PropertyIgnoreParse;
+use Paulo\Attributes\PropertyIgnoreSerialize;
 use Paulo\Pipeline\PipelineResult;
 
 /**
- * @extends AbstractPipe<PropertyIgnore>
+ * @extends AbstractPipe<PropertyIgnoreParse|PropertyIgnoreSerialize>
  */
 class PropertyIgnorePipe extends AbstractPipe
 {

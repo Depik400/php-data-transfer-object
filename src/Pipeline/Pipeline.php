@@ -2,7 +2,7 @@
 
 namespace Paulo\Pipeline;
 
-use Paulo\Attributes\Interfaces\TransformObjectAttribute;
+use Paulo\Attributes\Abstract\Transformable;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Interfaces\SetterInterface;
 use Paulo\TransformPipes\AbstractPipe;
@@ -54,7 +54,7 @@ abstract class Pipeline
     /**
      * Undocumented function
      *
-     * @param ReflectionAttribute<TransformObjectAttribute>[] $attributes
+     * @param ReflectionAttribute<\Paulo\Attributes\Abstract\Transformable>[] $attributes
      */
     public function pipeAttributes(array $attributes): void
     {
@@ -83,12 +83,12 @@ abstract class Pipeline
     abstract protected function execute(AbstractPipe $pipeline, mixed $pipedItem): PipelineResult;
 
     /**
-     * @param ReflectionAttribute<TransformObjectAttribute>[] $attributes
+     * @param ReflectionAttribute<\Paulo\Attributes\Abstract\Transformable>[] $attributes
      * @return array|AbstractPipe<mixed>[]
      */
     public function getPipelines(array $attributes): array
     {
         $instances = array_map(fn(ReflectionAttribute $attr) => $attr->newInstance(), $attributes);
-        return array_map(fn(TransformObjectAttribute $attr) => $attr->getPipeline(), $instances);
+        return array_map(fn(Transformable $attr) => $attr->getPipeline(), $instances);
     }
 }

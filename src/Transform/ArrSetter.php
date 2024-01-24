@@ -2,7 +2,7 @@
 
 namespace Paulo\Transform;
 
-use Paulo\Attributes\Interfaces\AttributePropertySetterInterface;
+use Paulo\Attributes\Abstract\SetTransformable;
 use Paulo\Interfaces\SetterInterface;
 use Paulo\Object\Arr;
 use Paulo\Pipeline\SetPipeline;
@@ -38,7 +38,7 @@ class ArrSetter implements SetterInterface
             ->setWithAttributes(
                 $value,
                 $this->property->getAttributes(
-                    AttributePropertySetterInterface::class,
+                    SetTransformable::class,
                     \ReflectionAttribute::IS_INSTANCEOF
                 )
             );
