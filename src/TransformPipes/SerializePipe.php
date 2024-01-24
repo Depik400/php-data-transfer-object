@@ -18,7 +18,7 @@ class SerializePipe extends AbstractPipe
      */
     public function execute(\ReflectionProperty $property, mixed $value = null): PipelineResult
     {
-        return (new PipelineResult())->setNext($this->cast($value))->setNext(true);
+        return (new PipelineResult())->setResult($this->cast($value))->setNext(true);
     }
 
     protected function canCast(mixed $value): bool
@@ -40,7 +40,7 @@ class SerializePipe extends AbstractPipe
     protected function cast(mixed $value)
     {
         if (!$this->canCast($value)) {
-            return false;
+            return $value;
         }
         $static = $this->attribute->isStatic();
         $method = $this->attribute->getMethod();
