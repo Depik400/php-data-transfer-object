@@ -2,7 +2,7 @@
     "name": "svyazcom/data-transfer-object",
     "description": "Simple DTO wrapper",
     "type": "library",
-    "version": "1.0.0",
+    "version": "0.8.0",
     "autoload": {
         "psr-4": {
             "Paulo\\": "src/"
