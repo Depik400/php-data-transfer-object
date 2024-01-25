@@ -5,6 +5,7 @@ namespace Paulo;
 use Paulo\Attributes\Interfaces\AttributePropertyBoth;
 use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
 use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
+use Paulo\Helpers\AttributeHelper;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Interfaces\SetterInterface;
 use Paulo\Object\Arr;
@@ -82,24 +83,27 @@ class DataTransferObject
     /**
      * @return array<string, mixed>
      */
-    public function toArray(): array
+    public function toArray(?ConvertOptions $options = null): array
     {
         $result = new Arr();
         $reflector = new ReflectionClass($this);
         $properties = $reflector->getProperties();
         foreach ($properties as $property) {
-            $this->processSerializeProperty($property, $result);
+            $this->processSerializeProperty($property, $result, $options);
         }
         return $result->getArray();
     }
 
-    protected function processSerializeProperty(ReflectionProperty $property, Arr $result): void
+    protected function processSerializeProperty(ReflectionProperty $property, Arr $result, ?ConvertOptions $options = null): void
     {
         $attributes = $this->getSerializeAttributes($property);
+        if($options) {
+            $attributes = AttributeHelper::filterReflectionAttributes($attributes, $options);
+        }
         $pipeline = $this->getSerializePipeline();
         $pipeline
-            ->source($this->getObjectGetter($this, $property))
-            ->destination($this->getArrSetter($result, $property))
+            ->source($this->getObjectGetter($this, $property,$options))
+            ->destination($this->getArrSetter($result, $property, $options))
             ->property($property);
         $pipeline->pipeAttributes($attributes);
     }
@@ -121,9 +125,9 @@ class DataTransferObject
      * @param ReflectionProperty $property
      * @return ObjectGetter
      */
-    protected function getObjectGetter(mixed $source, ReflectionProperty $property): GetterInterface
+    protected function getObjectGetter(mixed $source, ReflectionProperty $property, ?ConvertOptions $options = null): GetterInterface
     {
-        return new ObjectGetter($source, $property);
+        return new ObjectGetter($source, $property, $options);
     }
 
     /**
@@ -131,9 +135,9 @@ class DataTransferObject
      * @param ReflectionProperty     $property
      * @return ObjectSetter
      */
-    protected function getObjectSetter(mixed $source, ReflectionProperty $property): SetterInterface
+    protected function getObjectSetter(mixed $source, ReflectionProperty $property, ?ConvertOptions $options = null): SetterInterface
     {
-        return new ObjectSetter($source, $property);
+        return new ObjectSetter($source, $property, $options);
     }
 
     /**
@@ -141,9 +145,9 @@ class DataTransferObject
      * @param ReflectionProperty $property
      * @return ArrGetter
      */
-    protected function getArrGetter(mixed $source, ReflectionProperty $property): GetterInterface
+    protected function getArrGetter(mixed $source, ReflectionProperty $property, ?ConvertOptions $options = null): GetterInterface
     {
-        return (new ArrGetter($source, $property));
+        return (new ArrGetter($source, $property, $options));
     }
 
     /**
@@ -151,9 +155,9 @@ class DataTransferObject
      * @param ReflectionProperty     $property
      * @return ArrSetter
      */
-    protected function getArrSetter(mixed $source, ReflectionProperty $property): SetterInterface
+    protected function getArrSetter(mixed $source, ReflectionProperty $property, ?ConvertOptions $options = null): SetterInterface
     {
-        return new ArrSetter($source, $property);
+        return new ArrSetter($source, $property, $options);
     }
 
     /**

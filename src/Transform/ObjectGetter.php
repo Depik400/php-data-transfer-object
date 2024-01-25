@@ -2,6 +2,7 @@
 
 namespace Paulo\Transform;
 
+use Paulo\ConvertOptions;
 use Paulo\DataTransferObject;
 use Paulo\Interfaces\GetterInterface;
 use ReflectionProperty;
@@ -14,6 +15,7 @@ class ObjectGetter implements GetterInterface
     public function __construct(
         protected DataTransferObject $dto,
         protected ReflectionProperty $property,
+        protected ?ConvertOptions $options = null,
     )
     {
     }

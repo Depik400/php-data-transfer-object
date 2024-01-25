@@ -2,6 +2,7 @@
 
 namespace Paulo\Transform;
 
+use Paulo\ConvertOptions;
 use Paulo\DataTransferObject;
 use Paulo\Interfaces\SetterInterface;
 use ReflectionProperty;
@@ -14,8 +15,9 @@ class ObjectSetter implements SetterInterface
 
 
     public function __construct(
-        protected DataTransferObject  $dto,  
+        protected DataTransferObject $dto,
         protected ReflectionProperty $property,
+        protected ?ConvertOptions    $options = null,
     )
     {
     }
