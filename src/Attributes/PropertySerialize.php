@@ -13,17 +13,18 @@ class PropertySerialize extends Transformable implements AttributePropertySerial
 {
     /**
      * @template T
-     * @param class-string                 $casterClassName
-     * @param string|null                  $method
-     * @param boolean                      $static
-     * @param PhpType|class-string<T>|null $fromType
+     * @param class-string                        $casterClassName
+     * @param string|null                         $method
+     * @param boolean                             $static
+     * @param PhpType|class-string<T>|null|string $fromType
      */
     public function __construct(
-        private readonly string $casterClassName,
-        private readonly ?string $method = null,
-        private readonly bool $static = false,
+        private readonly string              $casterClassName,
+        private readonly ?string             $method = null,
+        private readonly bool                $static = false,
         private readonly null|string|PhpType $fromType = null,
-    ) {
+    )
+    {
     }
 
     /** @return SerializePipe */
