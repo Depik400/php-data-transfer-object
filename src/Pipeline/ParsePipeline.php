@@ -2,13 +2,15 @@
 
 namespace Paulo\Pipeline;
 
+use Paulo\Interfaces\GetterInterface;
+use Paulo\Interfaces\SetterInterface;
 use Paulo\Transform\ArrGetter;
 use Paulo\Transform\ObjectSetter;
 use Paulo\TransformPipes\AbstractPipe;
 use Paulo\TransformPipes\DefaultParsePipe;
 
 /**
- * @extends Pipeline<ArrGetter,ObjectSetter>
+ * @extends Pipeline<GetterInterface,SetterInterface>
  */
 class ParsePipeline extends Pipeline
 {

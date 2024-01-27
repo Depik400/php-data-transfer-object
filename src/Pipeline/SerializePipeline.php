@@ -2,13 +2,15 @@
 
 namespace Paulo\Pipeline;
 
+use Paulo\Interfaces\GetterInterface;
+use Paulo\Interfaces\SetterInterface;
 use Paulo\Transform\ArrSetter;
 use Paulo\Transform\ObjectGetter;
 use Paulo\TransformPipes\AbstractPipe;
 use Paulo\TransformPipes\DefaultSerializePipe;
 
 /**
- * @extends Pipeline<ObjectGetter,ArrSetter>
+ * @extends Pipeline<GetterInterface<object>,SetterInterface<object>>
  */
 class SerializePipeline extends Pipeline
 {
