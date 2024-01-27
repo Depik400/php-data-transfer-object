@@ -1,5 +1,5 @@
 {
-    "name": "svyazcom/data-transfer-object",
+    "name": "paulo/data-transfer-object",
     "description": "Simple DTO wrapper",
     "type": "library",
     "version": "0.8.0",
