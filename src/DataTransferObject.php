@@ -2,6 +2,7 @@
 
 namespace Paulo;
 
+use Paulo\Attributes\Abstract\Transformable;
 use Paulo\Attributes\Interfaces\AttributePropertyBoth;
 use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
 use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
@@ -19,6 +20,7 @@ use Paulo\Transform\ObjectSetter;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionProperty;
+
 use function array_merge;
 
 class DataTransferObject
@@ -28,56 +30,61 @@ class DataTransferObject
      * @param array<string,mixed>|DataTransferObject $wrap
      * @return static
      */
-    public static function wrap(array|DataTransferObject $wrap): static
+    public static function wrap(array|DataTransferObject $wrap, ?ConvertOptions $options = null): static
     {
         //@phpstan-ignore-next-line
-        return (new static)->fill($wrap);
+        return (new static())->fill($wrap, $options);
     }
 
     /**
      * @param array<string,mixed>|DataTransferObject $fromFill
      * @return static
      */
-    public function fill(array|DataTransferObject $fromFill): static
+    public function fill(array|DataTransferObject $fromFill, ?ConvertOptions $options = null): static
     {
-        if ($fromFill instanceof DataTransferObject) {
-            $fromFill = $fromFill->toArray();
+        if (!is_array($fromFill)) {
+            $getter = fn ($property) => $this->getObjectGetter($fromFill, $property);
+        } else {
+            $arr = new Arr($fromFill);
+            $getter = fn ($property) => $this->getArrGetter($arr, $property, $options);
         }
         $reflector = new ReflectionClass(static::class);
         $properties = $reflector->getProperties();
+        $pipeline = $this->getParsePipeline();
         foreach ($properties as $property) {
-            $this->processProperty($property, $fromFill);
+            $attributes = $this->getParseAttributes($property, $options);
+            $this->process(
+                $attributes,
+                $property,
+                $pipeline,
+                $getter($property),
+                $this->getObjectSetter($this, $property, $options),
+                $options,
+            );
         }
         return $this;
     }
 
-
-    /**
-     * @param ReflectionProperty  $property
-     * @param array<string,mixed> $wrap
-     * @return void
-     */
-    protected function processProperty(ReflectionProperty $property, array $wrap): void
+    public function clone(): static
     {
-        $attributes = $this->getParseAttributes($property);
-        $pipeline = $this->getParsePipeline();
-        $pipeline
-            ->source($this->getArrGetter(new Arr($wrap), $property))
-            ->destination($this->getObjectSetter($this, $property))
-            ->property($property);
-        $pipeline->pipeAttributes($attributes);
+        return (new static())->fill($this);
     }
+
 
     /**
      * @param ReflectionProperty $property
-     * @return ReflectionAttribute<AttributePropertyBoth|AttributePropertyParseInterface>[]
+     * @return ReflectionAttribute<(AttributePropertyBoth&Transformable)|(AttributePropertyParseInterface&Transformable)>[]
      */
-    protected function getParseAttributes(ReflectionProperty $property): array
+    protected function getParseAttributes(ReflectionProperty $property, ?ConvertOptions $options = null): array
     {
-        return array_merge(
+        $attributes = array_merge(
             $property->getAttributes(AttributePropertyBoth::class, ReflectionAttribute::IS_INSTANCEOF),
             $property->getAttributes(AttributePropertyParseInterface::class, ReflectionAttribute::IS_INSTANCEOF),
         );
+        if ($options) {
+            $attributes = AttributeHelper::filterReflectionAttributes($attributes, $options);
+        }
+        return $attributes;
     }
 
     /**
@@ -88,36 +95,99 @@ class DataTransferObject
         $result = new Arr();
         $reflector = new ReflectionClass($this);
         $properties = $reflector->getProperties();
+        $pipeline = $this->getSerializePipeline();
         foreach ($properties as $property) {
-            $this->processSerializeProperty($property, $result, $options);
+            $attributes = $this->getSerializeAttributes($property, $options);
+            $this->process(
+                $attributes,
+                $property,
+                $pipeline,
+                $this->getObjectGetter($this, $property, $options),
+                $this->getArrSetter($result, $property, $options),
+                $options
+            );
         }
         return $result->getArray();
     }
 
-    protected function processSerializeProperty(ReflectionProperty $property, Arr $result, ?ConvertOptions $options = null): void
+    /**
+     * @param array<string|int, mixed> $from
+     * @param ConvertOptions|null      $options
+     * @return array<string|int, mixed>
+     */
+    public static function convert(array $from, ?ConvertOptions $options = null): array
     {
-        $attributes = $this->getSerializeAttributes($property);
-        if($options) {
+        return (new static())->toArrayFromArray($from, $options);
+    }
+
+    /**
+     * @param array<string|int, mixed> $from
+     * @param ConvertOptions|null      $options
+     * @return array
+     */
+    public function toArrayFromArray(array $from, ?ConvertOptions $options = null): array
+    {
+        $result = new Arr();
+        $from = new Arr($from);
+        $reflector = new ReflectionClass($this);
+        $properties = $reflector->getProperties();
+        $pipeline = $this->getSerializePipeline();
+        foreach ($properties as $property) {
+            $attributes = $this->getSerializeAttributes($property, $options);
+            $this->process(
+                $attributes,
+                $property,
+                $pipeline,
+                $this->getArrGetter($from, $property, $options),
+                $this->getArrSetter($result, $property, $options),
+                $options,
+            );
+        }
+        return $result->getArray();
+    }
+
+
+    /**
+     * @param array               $attributes
+     * @param ReflectionProperty  $property
+     * @param Pipeline            $pipeline
+     * @param GetterInterface     $getter
+     * @param SetterInterface     $setter
+     * @param ConvertOptions|null $options
+     * @return void
+     */
+    protected function process(
+        array              $attributes,
+        ReflectionProperty $property,
+        Pipeline           $pipeline,
+        GetterInterface    $getter,
+        SetterInterface    $setter,
+        ?ConvertOptions    $options = null
+    ) {
+        if ($options) {
             $attributes = AttributeHelper::filterReflectionAttributes($attributes, $options);
         }
-        $pipeline = $this->getSerializePipeline();
         $pipeline
-            ->source($this->getObjectGetter($this, $property,$options))
-            ->destination($this->getArrSetter($result, $property, $options))
+            ->source($getter)
+            ->destination($setter)
             ->property($property);
         $pipeline->pipeAttributes($attributes);
     }
 
     /**
      * @param ReflectionProperty $property
-     * @return ReflectionAttribute<AttributePropertyBoth|AttributePropertySerializeInterface>[]
+     * @return ReflectionAttribute<(AttributePropertyBoth&Transformable)|(AttributePropertySerializeInterface&Transformable)>[]
      */
-    protected function getSerializeAttributes(ReflectionProperty $property): array
+    protected function getSerializeAttributes(ReflectionProperty $property, ?ConvertOptions $options = null): array
     {
-        return array_merge(
+        $attributes = array_merge(
             $property->getAttributes(AttributePropertyBoth::class, ReflectionAttribute::IS_INSTANCEOF),
             $property->getAttributes(AttributePropertySerializeInterface::class, ReflectionAttribute::IS_INSTANCEOF),
         );
+        if ($options) {
+            $attributes = AttributeHelper::filterReflectionAttributes($attributes, $options);
+        }
+        return $attributes;
     }
 
     /**
@@ -161,7 +231,7 @@ class DataTransferObject
     }
 
     /**
-     * @return Pipeline<ObjectGetter,ArrSetter>
+     * @return Pipeline<GetterInterface,SetterInterface>
      */
     protected function getSerializePipeline(): Pipeline
     {
