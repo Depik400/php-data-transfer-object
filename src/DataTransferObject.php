@@ -6,6 +6,10 @@ use Paulo\Attributes\Abstract\Transformable;
 use Paulo\Attributes\Interfaces\AttributePropertyBoth;
 use Paulo\Attributes\Interfaces\AttributePropertyParseInterface;
 use Paulo\Attributes\Interfaces\AttributePropertySerializeInterface;
+use Paulo\Attributes\PropertyInternal;
+use Paulo\Attributes\PropertyMapFrom;
+use Paulo\Attributes\PropertyMapTo;
+use Paulo\GetPipes\MapFromGetPipe;
 use Paulo\Helpers\AttributeHelper;
 use Paulo\Interfaces\GetterInterface;
 use Paulo\Interfaces\SetterInterface;
@@ -23,8 +27,16 @@ use ReflectionProperty;
 
 use function array_merge;
 
-class DataTransferObject
+class DataTransferObject implements \ArrayAccess
 {
+    #[PropertyInternal]
+    protected ReflectionClass $self;
+
+    public function __construct()
+    {
+        $this->self = new ReflectionClass($this);
+    }
+
     /**
      *
      * @param array<string,mixed>|DataTransferObject $wrap
@@ -60,7 +72,7 @@ class DataTransferObject
                 $property,
                 $pipeline,
                 $getter($property),
-                $this->getObjectSetter($this, $property, $options),
+                $this->getObjectSetter($this, $property, new ConvertOptions([PropertyMapTo::class])),
                 $options,
             );
         }
@@ -105,7 +117,7 @@ class DataTransferObject
                 $attributes,
                 $property,
                 $pipeline,
-                $this->getObjectGetter($this, $property, $options),
+                $this->getObjectGetter($this, $property, new ConvertOptions([PropertyMapFrom::class])),
                 $this->getArrSetter($result, $property, $options),
                 $options
             );
@@ -115,7 +127,7 @@ class DataTransferObject
 
     /**
      * @param array<array-key, mixed> $from
-     * @param ConvertOptions|null      $options
+     * @param ConvertOptions|null     $options
      * @return array<array-key, mixed>
      */
     public static function convert(array $from, ?ConvertOptions $options = null): array
@@ -125,7 +137,7 @@ class DataTransferObject
 
     /**
      * @param array<array-key, mixed> $from
-     * @param ConvertOptions|null      $options
+     * @param ConvertOptions|null     $options
      * @return array<array-key, mixed>
      */
     public function toArrayFromArray(array $from, ?ConvertOptions $options = null): array
@@ -147,6 +159,30 @@ class DataTransferObject
             );
         }
         return $result->getArray();
+    }
+
+    public function copyTo(object|array &$to, ConvertOptions $options = null): void
+    {
+        if (is_object($to)) {
+            $setter = fn($property) => $this->getObjectSetter($to, $property, $options);
+        } else {
+            $arr = (new Arr())->wrapRef($to);
+            $setter = fn($property) => $this->getArrSetter($arr, $property, $options);
+        }
+        $reflector = new ReflectionClass($this);
+        $properties = $reflector->getProperties();
+        $pipeline = $this->getSerializePipeline();
+        foreach ($properties as $property) {
+            $attributes = $this->getSerializeAttributes($property, $options);
+            $this->processArrayFromArray(
+                $attributes,
+                $property,
+                $pipeline,
+                $this->getObjectGetter($this, $property, $options),
+                $setter($property),
+                $options,
+            );
+        }
     }
 
 
@@ -318,5 +354,31 @@ class DataTransferObject
     protected function getParsePipeline(): Pipeline
     {
         return new ParsePipeline();
+    }
+
+
+    public function offsetExists(mixed $offset): bool
+    {
+        try {
+            $property = $this->self->getProperty($offset);
+            return true;
+        } catch (\ReflectionException) {
+            return false;
+        }
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->$offset;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        $this->self->getProperty($offset)->setValue($this, $value);
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        $this->self->getProperty($offset)->setValue($offset);
     }
 }

@@ -11,17 +11,17 @@ class SetPipeline
 {
     /**
      * @param \ArrayAccess<string, mixed> $setter
-     * @param string $property
+     * @param string                      $property
      */
     public function __construct(
-        protected \ArrayAccess $setter,
-        protected string       $property,
+        protected mixed  $setter,
+        protected string $property,
     )
     {
     }
 
     /**
-     * @param mixed $value
+     * @param mixed                                   $value
      * @param ReflectionAttribute<SetTransformable>[] $attributes
      * @return void
      */

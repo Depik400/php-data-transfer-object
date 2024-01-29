@@ -15,6 +15,10 @@ class Arr implements \ArrayAccess
     {
     }
 
+    public function wrapRef(array &$arr): static {
+        $this->arr = &$arr;
+        return $this;
+    }
     /**
      * @return array<string,mixed>
      */

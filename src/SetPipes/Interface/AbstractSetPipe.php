@@ -25,5 +25,5 @@ abstract class AbstractSetPipe
      * @param mixed $value
      * @return SetPipeResult
      */
-    abstract public function execute(\ArrayAccess $source, string $property,mixed $value): SetPipeResult;
+    abstract public function execute(mixed $source, string $property,mixed $value): SetPipeResult;
 }

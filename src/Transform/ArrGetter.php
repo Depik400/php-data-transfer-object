@@ -45,9 +45,10 @@ class ArrGetter implements GetterInterface
         if ($this->options) {
             $attributes = AttributeHelper::filterReflectionAttributes($attributes, $this->options);
         }
-        return (new GetPipeline($this->dto, $this->property->getName()))
+        $val = (new GetPipeline($this->dto, $this->property->getName()))
             ->getWithAttributes(
                 $attributes
             );
+        return $val;
     }
 }

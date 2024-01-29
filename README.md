@@ -1,4 +1,11 @@
 # InProgress... There may be incompatible changes
+# Доступные аттрибуты
+
+1. PropertyIgnoreParse - игнорирует свойство объекта при парсинге массива
+2. PropertyIgnoreSerialize - игнорирует свойство при сериализации объекта
+3. 
+
+
 # Example
 
 ```php

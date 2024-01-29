@@ -28,4 +28,8 @@ class ConvertOptions
         $this->exlcudeAttributesList = $exlcudeAttributesList;
         return $this;
     }
+
+    public function concatWith(ConvertOptions $options) {
+
+    }
 }
