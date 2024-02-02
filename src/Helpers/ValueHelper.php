@@ -26,7 +26,7 @@ class ValueHelper
         return $value;
     }
 
-    public static function &getRef(array|object $source, string $path)
+    public static function &getRef(array|object &$source, string $path)
     {
         $var = is_array($source) ? ($source[$path] ?? null) : ($source->$path ?? null);
         return $var;
@@ -37,25 +37,32 @@ class ValueHelper
         $sections = explode('.', $path);
         $sectionsCount = count($sections);
         $first = array_shift($sections);
-        if (self::get($source, $path) === null) {
+        $workerItem = self::get($source, $first);
+        if ($workerItem === null) {
             $workerItem = [];
-        } else {
-            $workerItem = self::get($source, $first);
         }
         $last = array_pop($sections);
         $pointer = &$workerItem;
         foreach ($sections as $section) {
-            if (self::get($workerItem, $section) === null) {
-                self::set($source, $section, []);
+            $itemOnSection = self::get($pointer, $section);
+            if ((!is_object($itemOnSection) && !is_array($itemOnSection))) {
+                self::set($pointer, $section, []);
             }
-            $pointer = &self::getRef($source, $section);
+            if (is_array($pointer)) {
+                $pointer = &$pointer[$section];
+            } else if (is_object($pointer)) {
+                $pointer = &$pointer->$section;
+            } else {
+                $pointer[$section] = [];
+                $pointer = &$pointer[$section];
+            }
         }
         if ($sectionsCount > 1) {
             self::set($pointer, $last, $value);
             if (is_array($source)) {
-                $source[$first] = $pointer;
+                $source[$first] = $workerItem;
             } else {
-                self::setOnObject($source, $first, $pointer);
+                self::setOnObject($source, $first, $workerItem);
             }
         } else {
             if (is_array($source)) {
@@ -72,6 +79,8 @@ class ValueHelper
         if ($reflectProperty) {
             $reflectProperty->setValue($source, $value);
         } else if (method_exists($source, '__set')) {
+            $source->$property = $value;
+        } else if ($source instanceof \stdClass) {
             $source->$property = $value;
         }
     }

@@ -7,7 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 class DataTransferObjectMapToTest extends TestCase
 {
-    public function testMapFromOneSection(): void {
+    public function testMapToArrayOneSection(): void
+    {
         $array = ['to' => 'test value'];
         $cls = new class extends DataTransferObject {
             #[PropertyMapTo('from')]
@@ -15,27 +16,56 @@ class DataTransferObjectMapToTest extends TestCase
         };
         $cls->fill($array);
         $this->assertSame('test value', $cls->to);
-        $this->assertSame('test value',$cls->fill($array)->toArray()['from']);
+        $this->assertSame('test value', $cls->fill($array)->toArray()['from']);
     }
 
-    public function testMapFromOneTwoSection(): void {
+    public function testMapToArrayOneTwoSection(): void
+    {
         $array = ['to' => 'test value'];
         $cls = new class extends DataTransferObject {
             #[PropertyMapTo('from.test')]
             public mixed $to;
         };
         $cls->fill($array);
-        $this->assertSame('test value',$cls->fill($array)->toArray()['from']['test']);
+        $this->assertSame('test value', $cls->fill($array)->toArray()['from']['test']);
     }
 
-    public function testMapFromOneTwoNone(): void {
+    public function testMapToArrayOneTwoNone(): void
+    {
         $array = ['to' => 'test value'];
         $cls = new class extends DataTransferObject {
             #[PropertyMapTo('')]
             public mixed $to;
         };
         $cls->fill($array);
-        $this->assertSame(null,$cls->fill($array)->toArray()['to'] ?? null);
+        $this->assertSame(null, $cls->fill($array)->toArray()['to'] ?? null);
+    }
+
+    public function testMapToObjectTwoSection(): void
+    {
+        $array = ['to' => 'test value'];
+        $cls = new class extends DataTransferObject {
+            #[PropertyMapTo('test.worker')]
+            public mixed $to;
+        };
+        $cls->fill($array);
+        $object = new stdClass();
+        $object->test = new stdClass();
+        $cls->copyTo($object);
+        $this->assertSame('test value', $object->test->worker);
+    }
+    public function testMapToObjectTwoArrSection(): void
+    {
+        $array = ['to' => 'test value'];
+        $cls = new class extends DataTransferObject {
+            #[PropertyMapTo('test.worker')]
+            public mixed $to;
+        };
+        $cls->fill($array);
+        $object = new stdClass();
+        $object->test = ['worker' => 1];
+        $cls->copyTo($object);
+        $this->assertSame('test value', $object->test['worker']);
     }
 }
 
