@@ -54,10 +54,12 @@ class DataTransferObject implements \ArrayAccess
      * @param ConvertOptions|null                    $options
      * @return static
      */
-    public function fill(array|DataTransferObject $fromFill, ?ConvertOptions $options = null): static
+    public function fill(array|object $fromFill, ?ConvertOptions $options = null): static
     {
-        if (!is_array($fromFill)) {
-            $getter = fn($property) => $this->getObjectGetter($fromFill, $property);
+        if ($fromFill instanceof DataTransferObject) {
+            $getter = fn($property) => $this->getObjectGetter($fromFill, $property, (new ConvertOptions([PropertyMapFrom::class])));
+        } else if (is_object($fromFill)) {
+            $getter = fn($property) => $this->getObjectGetter($fromFill, $property, $options);
         } else {
             $arr = new Arr($fromFill);
             $getter = fn($property) => $this->getArrGetter($arr, $property, $options);
@@ -178,7 +180,7 @@ class DataTransferObject implements \ArrayAccess
                 $attributes,
                 $property,
                 $pipeline,
-                $this->getObjectGetter($this, $property, $options),
+                $this->getObjectGetter($this, $property, (new ConvertOptions([PropertyMapFrom::class]))->concatWith($options)),
                 $setter($property),
                 $options,
             );

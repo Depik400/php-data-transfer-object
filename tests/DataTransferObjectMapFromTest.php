@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class DataTransferObjectMapFromTest extends TestCase
 {
-    public function testMapFromOneSection(): void
+    public function testMapArrayFromOneSection(): void
     {
         $array = ['from' => 'test value'];
         $cls = new class extends DataTransferObject {
@@ -16,7 +16,7 @@ class DataTransferObjectMapFromTest extends TestCase
         $this->assertSame('test value', $cls->to);
     }
 
-    public function testMapFromOneTwoSection(): void
+    public function testMapArrayFromOneTwoSection(): void
     {
         $array = ['from' => ['test' => 'test value']];
         $cls = new class extends DataTransferObject {
@@ -27,7 +27,7 @@ class DataTransferObjectMapFromTest extends TestCase
         $this->assertSame('test value', $cls->to);
     }
 
-    public function testMapFromOneTwoNone(): void
+    public function testMapArrayFromOneTwoNone(): void
     {
         $array = ['from' => ['test' => 'test value']];
         $cls = new class extends DataTransferObject {
@@ -36,5 +36,28 @@ class DataTransferObjectMapFromTest extends TestCase
         };
         $cls->fill($array);
         $this->assertSame(null, $cls->to);
+    }
+
+    public function testMapFromStdObjectOneSection() {
+        $array = new stdClass();
+        $array->from = 'test value';
+        $cls = new class extends DataTransferObject {
+            #[PropertyMapFrom('from')]
+            public mixed $to;
+        };
+        $cls->fill($array);
+        $this->assertSame('test value', $cls->to);
+    }
+
+    public function testMapFromStdObjectTwoSection() {
+        $array = new stdClass();
+        $array->from = new stdClass();
+        $array->from->from = 'test value';
+        $cls = new class extends DataTransferObject {
+            #[PropertyMapFrom('from.from')]
+            public mixed $to;
+        };
+        $cls->fill($array);
+        $this->assertSame('test value', $cls->to);
     }
 }

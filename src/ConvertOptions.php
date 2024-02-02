@@ -12,6 +12,7 @@ class ConvertOptions
     )
     {
     }
+
     /**
      * @return class-string[]
      */
@@ -23,13 +24,18 @@ class ConvertOptions
     /**
      * @param class-string[] $exlcudeAttributesList
      */
-    public function setExlcudeAttributesList(array $exlcudeAttributesList): ConvertOptions
+    public function setExlcudeAttributesList(array $exlcudeAttributesList): static
     {
         $this->exlcudeAttributesList = $exlcudeAttributesList;
         return $this;
     }
 
-    public function concatWith(ConvertOptions $options) {
-
+    public function concatWith(?ConvertOptions $options): static
+    {
+        if (is_null($options)) {
+            return $this;
+        }
+        $this->exlcudeAttributesList = array_merge($options->getExlcudeAttributesList(), $this->exlcudeAttributesList);
+        return $this;
     }
 }

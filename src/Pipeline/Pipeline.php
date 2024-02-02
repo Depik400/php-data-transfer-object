@@ -62,7 +62,7 @@ abstract class Pipeline
         $pipedItem = $this->getter->get();
         foreach ($pipelines as $pipeline) {
             $result = $this->execute($pipeline, $pipedItem);
-            if($result->isPipeDropped()) {
+            if ($result->isPipeDropped()) {
                 return;
             }
             if ($result->canSetValue()) {

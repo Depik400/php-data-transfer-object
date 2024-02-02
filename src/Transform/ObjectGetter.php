@@ -7,7 +7,9 @@ use Paulo\ConvertOptions;
 use Paulo\DataTransferObject;
 use Paulo\Helpers\AttributeHelper;
 use Paulo\Interfaces\GetterInterface;
+use Paulo\Object\ProxyObject;
 use Paulo\Pipeline\GetPipeline;
+use Paulo\Reflect\Reflect;
 use ReflectionProperty;
 
 /**
@@ -15,12 +17,23 @@ use ReflectionProperty;
  */
 class ObjectGetter implements GetterInterface
 {
+    protected object $dto;
+
     public function __construct(
-        protected DataTransferObject $dto,
+        object                       $dto,
         protected ReflectionProperty $property,
-        protected ?ConvertOptions $options = null,
+        protected ?ConvertOptions    $options = null,
     )
     {
+        if (!$this->property->isPublic() && !($dto instanceof \stdClass)) {
+            $this->dto = new ProxyObject($dto,
+                $this->property->class === get_class($dto) ?
+                    $this->property :
+                    Reflect::getPropertyByName($dto, $this->property->getName())
+            );
+        } else {
+            $this->dto = $dto;
+        }
     }
 
     public function setSource($object): static
@@ -41,39 +54,12 @@ class ObjectGetter implements GetterInterface
      */
     public function get(): mixed
     {
-        $dto = $this->dto;
-        if ($this->property->isProtected() && $this->dto instanceof DataTransferObject) {
-            $dto = new class($this->dto, $this->property) {
-                public function __construct(
-                    protected                    $dto,
-                    protected ReflectionProperty $property
-                )
-                {
-                }
-
-                public function __set(string $name, $value): void
-                {
-                    $this->property->setValue($this->dto, $value);
-                }
-
-                public function &__get(string $name)
-                {
-                    $value = null;
-                    if ($this->property->getName() === $name && $name !== 'self') {
-                         $value = $this->property->getValue($this->dto);
-                        return $value;
-                    }
-                    return $value;
-                }
-            };
-        }
         $attributes = $this->property->getAttributes(
-            GetTransformable::class,
-            \ReflectionAttribute::IS_INSTANCEOF);
+            GetTransformable::class, \ReflectionAttribute::IS_INSTANCEOF);
         if ($this->options) {
             $attributes = AttributeHelper::filterReflectionAttributes($attributes, $this->options);
         }
-        return (new GetPipeline($dto, $this->property->getName()))
+        return (new GetPipeline($this->dto, $this->property->getName()))
             ->getWithAttributes(
                 $attributes
             );

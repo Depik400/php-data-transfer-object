@@ -2,6 +2,9 @@
 
 namespace Paulo\Helpers;
 
+use Paulo\Object\ProxyObject;
+use Paulo\Reflect\Reflect;
+
 class ValueHelper
 {
     public static function get(object|array $value, string $path)
@@ -48,18 +51,28 @@ class ValueHelper
             $pointer = &self::getRef($source, $section);
         }
         if ($sectionsCount > 1) {
-            self::set($pointer,$last, $value);
-            if(is_array($source)) {
+            self::set($pointer, $last, $value);
+            if (is_array($source)) {
                 $source[$first] = $pointer;
             } else {
-                $source->$first = $pointer;
+                self::setOnObject($source, $first, $pointer);
             }
         } else {
-            if(is_array($source)) {
+            if (is_array($source)) {
                 $source[$first] = $value;
             } else {
-                $source->$first = $value;
+                self::setOnObject($source, $first, $value);
             }
+        }
+    }
+
+    public static function setOnObject(object &$source, string $property, mixed $value): void
+    {
+        $reflectProperty = Reflect::getPropertyByName($source, $property);
+        if ($reflectProperty) {
+            $reflectProperty->setValue($source, $value);
+        } else if (method_exists($source, '__set')) {
+            $source->$property = $value;
         }
     }
 }
