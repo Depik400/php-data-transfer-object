@@ -45,27 +45,27 @@ class DataTransferObjectMapToTest extends TestCase
     {
         $array = ['to' => 'test value'];
         $cls = new class extends DataTransferObject {
-            #[PropertyMapTo('test.worker')]
+            #[PropertyMapTo('test.worker.0')]
             public mixed $to;
         };
         $cls->fill($array);
         $object = new stdClass();
         $object->test = new stdClass();
         $cls->copyTo($object);
-        $this->assertSame('test value', $object->test->worker);
+        $this->assertSame('test value', $object->test->worker[0]);
     }
     public function testMapToObjectTwoArrSection(): void
     {
         $array = ['to' => 'test value'];
         $cls = new class extends DataTransferObject {
-            #[PropertyMapTo('test.worker')]
+            #[PropertyMapTo('test.worker.0')]
             public mixed $to;
         };
         $cls->fill($array);
         $object = new stdClass();
         $object->test = ['worker' => 1];
         $cls->copyTo($object);
-        $this->assertSame('test value', $object->test['worker']);
+        $this->assertSame('test value', $object->test['worker'][0]);
     }
 }
 
