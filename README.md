@@ -1,4 +1,4 @@
-# InProgress... There may be incompatible changes
+# Библиотека готова. Скоро напишу README
 # Доступные аттрибуты
 
 1. PropertyIgnoreParse - игнорирует свойство объекта при парсинге массива
