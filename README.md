@@ -107,6 +107,7 @@ public InternalClass2 $property;
 ```php
 #[PropertySerializeArray(InternalClass2::class, 'serialize', true, InternalClass2::class)]
 public array $property;
+```
 
 # Example
 
